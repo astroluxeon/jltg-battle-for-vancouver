@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 import './App.css'
+import Map from './Map';
 
 interface Challenge {
   id: number;
@@ -37,6 +38,7 @@ function App() {
           </li>
         )}
       </ul>
+      <Map />
     </div>
   )
 }

@@ -4,20 +4,22 @@ import org.springframework.stereotype.Service;
 import com.astroluxeon.jltgbfv.model.Region;
 import com.astroluxeon.jltgbfv.model.Challenge;
 import com.astroluxeon.jltgbfv.model.Status;
+import com.astroluxeon.jltgbfv.model.Team;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 @Service
 public class GameService {
-    private List<Region> regions;
+    private Map<String, Region> regions;
     private List<Challenge> challenges;
 
     public GameService() {
-        regions = new ArrayList<>();
+        regions = new HashMap<>();
         challenges = new ArrayList<>();
-        regions.add(new Region(0, "Downtown"));
-        regions.add(new Region(1, "West End"));
+
+        // TODO: initialize regions and challenges
+        regions.put("downtown", new Region("downtown", "Downtown"));
+        regions.put("west-end", new Region("west-end", "West End"));
         challenges.add(new Challenge(0, "Challenge 0"));
         challenges.add(new Challenge(1, "Challenge 1"));
         challenges.add(new Challenge(2, "Challenge 2"));
@@ -37,6 +39,10 @@ public class GameService {
         return active;
     }
 
+    public Collection<Region> getRegions() {
+        return regions.values();
+    }
+
     public void completeChallenge(int id) {
         challenges.get(id).setStatus(Status.COMPLETED);
         for (int i = id + 1; i < challenges.size(); i++) {
@@ -44,6 +50,24 @@ public class GameService {
                 challenges.get(i).setStatus(Status.ACTIVE);
                 break;
             }
+        }
+    }
+
+    public void claimRegion(String id, String team) {
+        if (regions.get(id) != null) {
+            try {
+                regions.get(id).setTeam(Team.valueOf(team));
+                System.out.println(regions.get(id).getName() + " claimed by " + team);
+            } catch (Exception e) {
+                System.out.println(team + " is not a valid team.");
+            }
+        }
+    }
+
+    public void lockRegion(String id, boolean lock) {
+        if (regions.get(id) != null) {
+            regions.get(id).setLocked(lock);
+            System.out.println(regions.get(id).getName() + " locked by " + regions.get(id).getTeam());
         }
     }
 }

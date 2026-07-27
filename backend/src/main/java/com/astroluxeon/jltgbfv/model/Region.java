@@ -1,23 +1,23 @@
 package com.astroluxeon.jltgbfv.model;
 
 public class Region {
-    private int id;
+    private String id;
     private String name;
     private Team team;
     private boolean locked;
 
-    public Region(int id, String name) {
+    public Region(String id, String name) {
         this.id = id;
         this.name = name;
         this.team = Team.NONE;
         this.locked = false;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
