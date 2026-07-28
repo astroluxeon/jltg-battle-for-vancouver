@@ -37,9 +37,26 @@ public class GameService {
         return regions.values();
     }
 
-    public void completeChallenge(int id, String team) {
-        int id2 = -1;
+    private Challenge drawCard(List<Challenge> deck) {
+        List<Challenge> cards = new ArrayList<>();
 
+        for (Challenge c : deck) {
+            if (c.getStatus() == Status.INACTIVE) {
+                cards.add(c);
+            }
+        }
+
+        if (!cards.isEmpty()) {
+            Collections.shuffle(cards);
+            Challenge c = cards.get(0);
+            c.setStatus(Status.ACTIVE);
+            return c;
+        }
+
+        return null;
+    }
+
+    public void completeChallenge(int id, String team) {
         for (Challenge c : challenges) {
             if (c.getId() == id) {
                 c.setStatus(Status.COMPLETED);
@@ -48,28 +65,16 @@ public class GameService {
             }
         }
 
-        for (Challenge c : challenges) {
-            if (c.getStatus() == Status.INACTIVE) {
-                c.setStatus(Status.ACTIVE);
-                id2 = c.getId();
-                break;
-            }
-        }
-
+        Challenge c = drawCard(challenges);
+        int id2 = c != null ? c.getId() : -1;
         challengeHistory.push(new Pair<>(id, id2));
-
         saveToFile();
     }
 
     public Challenge startBattle() {
-        for (Challenge c : battles) {
-            if (c.getStatus() == Status.INACTIVE) {
-                c.setStatus(Status.ACTIVE);
-                saveToFile();
-                return c;
-            }
-        }
-        return null;
+        Challenge c = drawCard(battles);
+        saveToFile();
+        return c;
     }
 
     public void completeBattle(int id, String team) {
