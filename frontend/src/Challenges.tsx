@@ -5,9 +5,12 @@ interface ChallengesProps {
 }
 
 interface Challenge {
+  type: string;
   id: number;
+  name: string;
   description: string;
   status: string;
+  winner?: string;
 }
 
 export default function Challenges({ refreshKey }: ChallengesProps) {
@@ -33,12 +36,14 @@ export default function Challenges({ refreshKey }: ChallengesProps) {
     <div>
       <h3>Active Challenges:</h3>
       <ul>
-        {challenges.map((challenge: Challenge) =>
-          <li key={challenge.id}>
-            {challenge.description}&nbsp;&nbsp;&nbsp;
-            <button onClick={() => handleComplete(challenge)}>Complete Challenge</button>
-          </li>
-        )}
+        {challenges
+          .filter((challenge: Challenge) => challenge.type === 'claim')
+          .map((challenge: Challenge) => (
+            <li key={challenge.id}>
+              {challenge.name}:&nbsp;{challenge.description}&nbsp;&nbsp;&nbsp;
+              <button onClick={() => handleComplete(challenge)}>Complete Challenge</button>
+            </li>
+          ))}
       </ul>
     </div>
   )

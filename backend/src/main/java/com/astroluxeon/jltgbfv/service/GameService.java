@@ -14,11 +14,13 @@ import java.util.HashMap;
 
 @Service
 public class GameService {
-    private final String FILE_PATH = "game-data.json";
+    private final String DATA_FILE = "game-data.json";
+    private final String DEFAULT_FILE = "game-default.json";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private Map<String, Region> regions;
     private List<Challenge> challenges;
+    private List<Challenge> battles;
 
     public GameService() {
         loadFromFile();
@@ -72,6 +74,20 @@ public class GameService {
     }
 
     public void initializeNewGame() {
+//        File file = new File(DEFAULT_FILE);
+//        if (file.exists()) {
+//            try {
+//                GameState state = objectMapper.readValue(file, GameState.class);
+//                this.regions = state.getRegions();
+//                this.challenges = state.getChallenges();
+//                System.out.println("Initialized new game.");
+//            } catch (IOException e) {
+//                System.out.println("Error initializing game: " + e.getMessage());
+//            }
+//        } else {
+//            System.out.println("No data found.");
+//        }
+
         this.regions = new HashMap<>();
         this.challenges = new ArrayList<>();
 
@@ -98,21 +114,25 @@ public class GameService {
         regions.put("kensington", new Region("kensington", "Kensington-Cedar Cottage"));
         regions.put("kitsilano", new Region("kitsilano", "Kitsilano"));
 
-        challenges.add(new Challenge(0, "Challenge 1"));
-        challenges.add(new Challenge(1, "Challenge 2"));
-        challenges.add(new Challenge(2, "Challenge 3"));
-        challenges.add(new Challenge(3, "Challenge 4"));
-        challenges.add(new Challenge(4, "Challenge 5"));
+        challenges.add(new ClaimChallenge(0, "Challenge 1", "Challenge 1"));
+        challenges.add(new ClaimChallenge(1, "Challenge 2", "Challenge 2"));
+        challenges.add(new ClaimChallenge(2, "Challenge 3", "Challenge 3"));
+        challenges.add(new ClaimChallenge(3, "Challenge 4", "Challenge 4"));
+        challenges.add(new ClaimChallenge(4, "Challenge 5", "Challenge 5"));
         challenges.get(0).setStatus(Status.ACTIVE);
         challenges.get(1).setStatus(Status.ACTIVE);
         challenges.get(2).setStatus(Status.ACTIVE);
+
+        battles.add(new BattleChallenge(0, "Battle 1", "Battle 1"));
+        battles.add(new BattleChallenge(1, "Battle 2", "Battle 2"));
+        battles.add(new BattleChallenge(2, "Battle 3", "Battle 3"));
 
         System.out.println("Initialized new game.");
         saveToFile();
     }
 
     private void loadFromFile() {
-        File file = new File(FILE_PATH);
+        File file = new File(DATA_FILE);
         if (file.exists()) {
             try {
                 GameState state = objectMapper.readValue(file, GameState.class);
@@ -129,10 +149,28 @@ public class GameService {
         }
     }
 
+    private void loadDefault() {
+        File file = new File(DEFAULT_FILE);
+        if (file.exists()) {
+            try {
+                GameState state = objectMapper.readValue(file, GameState.class);
+                this.regions = state.getRegions();
+                this.challenges = state.getChallenges();
+                System.out.println("Loaded data from file.");
+            } catch (IOException e) {
+                System.out.println("Error reading file: " + e.getMessage());
+                initializeNewGame();
+            }
+        } else {
+            System.out.println("No file found.");
+            initializeNewGame();
+        }
+    }
+
     private void saveToFile() {
         try {
             GameState state = new GameState(this.regions, this.challenges);
-            objectMapper.writeValue(new File(FILE_PATH), state);
+            objectMapper.writeValue(new File(DATA_FILE), state);
         } catch (IOException e) {
             System.out.println("Error saving file: " + e.getMessage());
         }
