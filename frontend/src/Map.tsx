@@ -24,6 +24,9 @@ export default function Map({ refreshKey }: MapProps) {
       });
   }, [refreshKey]);
 
+  const redScore = regions.filter(r => r.team === 'RED').length;
+  const blueScore = regions.filter(r => r.team === 'BLUE').length;
+
   const updateRegion = (actionUrl: string) => {
     if (selectedRegion) {
       fetch(`http://localhost:8080/api/regions/${selectedRegion.id}/${actionUrl}`, {
@@ -83,10 +86,28 @@ export default function Map({ refreshKey }: MapProps) {
   };
 
   return (
-    <div>
-      <br />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%' }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: '#f8f9fa',
+        padding: '15px 30px',
+        borderRadius: '12px',
+        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+        border: '1px solid #ddd',
+        fontFamily: 'sans-serif'
+      }}>
+        <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#0000cc' }}>
+          🔵 Blue: {blueScore}
+        </div>
+        <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#cc0000' }}>
+          🔴 Red: {redScore}
+        </div>
+      </div>
+
+      <div style={{ position: 'relative', width: '100%' }}>
       <h3>Current Map</h3>
-      <div style={{ position: 'relative' }}>
         {selectedRegion && (
           <div style={{
             position: 'absolute', top: '20px', left: '20px',

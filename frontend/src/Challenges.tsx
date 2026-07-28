@@ -31,7 +31,6 @@ export default function Challenges({ refreshKey }: ChallengesProps) {
 
   return (
     <div>
-      <br />
       <h3>Active Challenges:</h3>
       <ul>
         {challenges.map((challenge: Challenge) =>
