@@ -98,16 +98,16 @@ export default function Map({ refreshKey }: MapProps) {
         border: '1px solid #ddd',
         fontFamily: 'sans-serif'
       }}>
-        <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#0000cc' }}>
-          🔵 Blue: {blueScore}
-        </div>
         <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#cc0000' }}>
           🔴 Red: {redScore}
+        </div>
+        <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#0000cc' }}>
+          🔵 Blue: {blueScore}
         </div>
       </div>
 
       <div style={{ position: 'relative', width: '100%' }}>
-      <h3>Current Map:</h3>
+        <br />
         {selectedRegion && (
           <div style={{
             position: 'absolute', top: '20px', left: '20px',
