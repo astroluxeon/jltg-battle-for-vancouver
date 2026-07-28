@@ -18,8 +18,10 @@ export default function Map({ refreshKey }: MapProps) {
   useEffect(() => {
     fetch('http://localhost:8080/api/regions')
       .then(response => response.json())
-      .then(data => setRegions(data));
-    setSelectedRegion(null);
+      .then(data => {
+        setRegions(data);
+        setSelectedRegion(null);
+      });
   }, [refreshKey]);
 
   const updateRegion = (actionUrl: string) => {
