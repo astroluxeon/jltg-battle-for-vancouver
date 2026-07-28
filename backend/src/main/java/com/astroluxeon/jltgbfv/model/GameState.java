@@ -6,12 +6,14 @@ import java.util.List;
 public class GameState {
     private Map<String, Region> regions;
     private List<Challenge> challenges;
+    private List<Challenge> battles;
 
     public GameState() {}
 
-    public GameState(Map<String, Region> regions, List<Challenge> challenges) {
+    public GameState(Map<String, Region> regions, List<Challenge> challenges, List<Challenge> battles) {
         this.regions = regions;
         this.challenges = challenges;
+        this.battles = battles;
     }
 
     public Map<String, Region> getRegions() {
@@ -28,5 +30,13 @@ public class GameState {
 
     public void setChallenges(List<Challenge> challenges) {
         this.challenges = challenges;
+    }
+
+    public List<Challenge> getBattles() {
+        return battles;
+    }
+
+    public void setBattles(List<Challenge> battles) {
+        this.battles = battles;
     }
 }
