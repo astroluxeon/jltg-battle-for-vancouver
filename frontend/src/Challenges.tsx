@@ -138,7 +138,7 @@ export default function Challenges({ refreshKey }: ChallengesProps) {
               onClick={handleUndoChallenge}
               style={{ backgroundColor: '#888', color: 'white', padding: '4px 8px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}
             >
-              Undo Last
+              Undo Complete Challenge
             </button>
           )}
         </div>
