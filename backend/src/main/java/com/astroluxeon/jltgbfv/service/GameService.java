@@ -8,8 +8,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+
 @Service
 public class GameService {
+    private final int ACTIVE_DECK_SIZE = 3;
     private final String DATA_FILE = "game-data.json";
     private final String DEFAULT_FILE = "game-default.json";
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -60,11 +62,11 @@ public class GameService {
     }
 
     public Challenge startBattle() {
-        for (int i = 0; i < battles.size(); i++) {
-            if (battles.get(i).getStatus() == Status.INACTIVE) {
-                battles.get(i).setStatus(Status.ACTIVE);
+        for (Challenge c : battles) {
+            if (c.getStatus() == Status.INACTIVE) {
+                c.setStatus(Status.ACTIVE);
                 saveToFile();
-                return battles.get(i);
+                return c;
             }
         }
         return null;
@@ -197,13 +199,17 @@ public class GameService {
         challenges.add(new ClaimChallenge(2, "Challenge 3", "Challenge 3"));
         challenges.add(new ClaimChallenge(3, "Challenge 4", "Challenge 4"));
         challenges.add(new ClaimChallenge(4, "Challenge 5", "Challenge 5"));
-        challenges.get(0).setStatus(Status.ACTIVE);
-        challenges.get(1).setStatus(Status.ACTIVE);
-        challenges.get(2).setStatus(Status.ACTIVE);
 
         battles.add(new BattleChallenge(0, "Battle 1", "Battle 1"));
         battles.add(new BattleChallenge(1, "Battle 2", "Battle 2"));
         battles.add(new BattleChallenge(2, "Battle 3", "Battle 3"));
+
+        Collections.shuffle(challenges);
+        Collections.shuffle(battles);
+
+        for (int i = 0; i < ACTIVE_DECK_SIZE; i++) {
+            challenges.get(i).setStatus(Status.ACTIVE);
+        }
 
         System.out.println("Initialized new game.");
         saveToFile();
