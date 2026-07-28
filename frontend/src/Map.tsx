@@ -107,7 +107,7 @@ export default function Map({ refreshKey }: MapProps) {
       </div>
 
       <div style={{ position: 'relative', width: '100%' }}>
-      <h3>Current Map</h3>
+      <h3>Current Map:</h3>
         {selectedRegion && (
           <div style={{
             position: 'absolute', top: '20px', left: '20px',
