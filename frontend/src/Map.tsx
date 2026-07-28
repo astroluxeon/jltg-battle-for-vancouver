@@ -285,7 +285,7 @@ export default function Map({ refreshKey }: MapProps) {
                   x={coords.x}
                   y={coords.y}
                   fontSize="22"
-                  textAnchor="middle" // This centers the lock perfectly on the X coordinate
+                  textAnchor="middle"
                 >
                   🔒
                 </text>
