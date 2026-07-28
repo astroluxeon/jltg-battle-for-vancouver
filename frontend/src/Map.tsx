@@ -115,13 +115,26 @@ export default function Map({ refreshKey }: MapProps) {
             border: '2px solid black', borderRadius: '8px', zIndex: 10
           }}>
             <h3 style={{ marginTop: 0 }}>{selectedRegion.name}</h3>
-            <button onClick={() => handleTeamSelect('NONE')}>None</button>&nbsp;
-            <button onClick={() => handleTeamSelect('BLUE')} style={{ backgroundColor: 'blue', color: 'white' }}>Blue</button>&nbsp;
-            <button onClick={() => handleTeamSelect('RED')} style={{ backgroundColor: 'red', color: 'white' }}>Red</button>&nbsp;
-            <br /><br />
-            <button onClick={() => handleLock(true)}>Lock</button>&nbsp;
-            <button onClick={() => handleLock(false)}>Unlock</button>&nbsp;
-            <button onClick={() => setSelectedRegion(null)}>Cancel</button>&nbsp;
+
+            {selectedRegion.locked ? (
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ color: '#cc0000', fontWeight: 'bold', margin: '10px 0' }}>
+                  Region Locked
+                </p>
+                <button onClick={() => handleLock(false)}>Unlock</button>&nbsp;
+                <button onClick={() => setSelectedRegion(null)}>Cancel</button>
+              </div>
+            ) : (
+              <div>
+                <div style={{ marginBottom: '15px' }}>
+                  <button onClick={() => handleTeamSelect('NONE')}>None</button>&nbsp;
+                  <button onClick={() => handleTeamSelect('RED')} style={{ backgroundColor: 'red', color: 'white' }}>Red</button>&nbsp;
+                  <button onClick={() => handleTeamSelect('BLUE')} style={{ backgroundColor: 'blue', color: 'white' }}>Blue</button>
+                </div>
+                <button onClick={() => handleLock(true)}>Lock</button>&nbsp;
+                <button onClick={() => setSelectedRegion(null)}>Cancel</button>
+              </div>
+            )}
           </div>
         )}
 
