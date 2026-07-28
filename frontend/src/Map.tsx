@@ -19,9 +19,7 @@ export default function Map({ refreshKey }: MapProps) {
     fetch('http://localhost:8080/api/regions')
       .then(response => response.json())
       .then(data => setRegions(data));
-
-    // 3. Add refreshKey to this array! Now it runs on boot AND on reset.
-    setSelectedRegion(null); // Also close the menu if it's open during a reset
+    setSelectedRegion(null);
   }, [refreshKey]);
 
   const updateRegion = (actionUrl: string) => {
