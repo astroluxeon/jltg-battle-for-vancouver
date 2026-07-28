@@ -128,11 +128,9 @@ export default function Challenges({ refreshKey }: ChallengesProps) {
       </div>
 
       <div>
-        {/* 2. Group the Header and the new Global Undo Button together */}
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
           <h3 style={{ margin: 0 }}>Active Challenges</h3>
 
-          {/* Only render the undo button if the stack isn't empty (there is at least 1 completed challenge) */}
           {challenges.some(c => c.status === 'COMPLETED') && (
             <button
               onClick={handleUndoChallenge}
@@ -170,7 +168,6 @@ export default function Challenges({ refreshKey }: ChallengesProps) {
                   <strong>{challenge.name}</strong>:&nbsp;{challenge.description}
                 </div>
 
-                {/* 3. The individual Undo button is gone! We only render Red/Blue if it's active. */}
                 {challenge.status !== 'COMPLETED' && (
                   <div style={{
                     position: 'absolute',
