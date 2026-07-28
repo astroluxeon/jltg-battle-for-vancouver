@@ -6,11 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 @Service
 public class GameService {
@@ -21,6 +17,7 @@ public class GameService {
     private Map<String, Region> regions;
     private List<Challenge> challenges;
     private List<Challenge> battles;
+    private Stack<Integer> challengeHistory;
 
     public GameService() {
         loadFromFile();
@@ -42,6 +39,7 @@ public class GameService {
         try {
             challenges.get(id).setStatus(Status.COMPLETED);
             challenges.get(id).setTeam(Team.valueOf(team));
+            challengeHistory.push(id);
             for (int i = id + 1; i < challenges.size(); i++) {
                 if (challenges.get(i).getStatus() == Status.INACTIVE) {
                     challenges.get(i).setStatus(Status.ACTIVE);
@@ -97,22 +95,30 @@ public class GameService {
         }
     }
 
-    public void undoChallenge(int id) {
-        for (Challenge c : challenges) {
-            if (c.getId() == id) {
-                c.setStatus(Status.ACTIVE);
-                c.setTeam(Team.NONE);
-                saveToFile();
+    public void undoChallenge() {
+        if (challengeHistory.isEmpty()) {
+            return;
+        }
+
+        int lastCompletedId = challengeHistory.pop();
+
+        for (Challenge challenge : challenges) {
+            if (challenge.getId() == lastCompletedId) {
+                challenge.setStatus(Status.ACTIVE);
+                challenge.setTeam(Team.NONE);
                 break;
             }
         }
 
         for (int i = challenges.size() - 1; i >= 0; i--) {
-            if (challenges.get(i).getStatus() == Status.ACTIVE && challenges.get(i).getId() != id) {
-                challenges.get(i).setStatus(Status.INACTIVE);
+            Challenge c = challenges.get(i);
+            if (c.getStatus() == Status.ACTIVE && c.getId() != lastCompletedId) {
+                c.setStatus(Status.INACTIVE);
                 break;
             }
         }
+
+        saveToFile();
     }
 
     public void undoBattle(int id) {
@@ -139,6 +145,7 @@ public class GameService {
 //                this.regions = state.getRegions();
 //                this.challenges = state.getChallenges();
 //                this.battles = state.getBattles();
+//                this.challengeHistory = state.getChallengeHistory();
 //                System.out.println("Initialized new game.");
 //            } catch (IOException e) {
 //                System.out.println("Error initializing game: " + e.getMessage());
@@ -150,6 +157,7 @@ public class GameService {
         this.regions = new HashMap<>();
         this.challenges = new ArrayList<>();
         this.battles = new ArrayList<>();
+        this.challengeHistory = new Stack<>();
 
         regions.put("arbutus", new Region("arbutus", "Arbutus Ridge"));
         regions.put("grandview", new Region("grandview", "Grandview-Woodland"));
@@ -199,6 +207,7 @@ public class GameService {
                 this.regions = state.getRegions();
                 this.challenges = state.getChallenges();
                 this.battles = state.getBattles();
+                this.challengeHistory = state.getChallengeHistory() != null ? state.getChallengeHistory() : new Stack<>();
                 System.out.println("Loaded data from file.");
             } catch (IOException e) {
                 System.out.println("Error reading file: " + e.getMessage());
@@ -212,7 +221,7 @@ public class GameService {
 
     private void saveToFile() {
         try {
-            GameState state = new GameState(this.regions, this.challenges, this.battles);
+            GameState state = new GameState(this.regions, this.challenges, this.battles, this.challengeHistory);
             objectMapper.writeValue(new File(DATA_FILE), state);
         } catch (IOException e) {
             System.out.println("Error saving file: " + e.getMessage());

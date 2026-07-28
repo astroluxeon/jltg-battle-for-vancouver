@@ -43,9 +43,9 @@ public class GameController {
         gameService.completeChallenge(id, team.toUpperCase());
     }
 
-    @PostMapping("/challenges/{id}/undo")
-    public void undoChallenge(@PathVariable int id) {
-        gameService.undoChallenge(id);
+    @PostMapping("/challenges/undo")
+    public void undoChallenge() {
+        gameService.undoChallenge();
     }
 
     @PostMapping("/battles/new")

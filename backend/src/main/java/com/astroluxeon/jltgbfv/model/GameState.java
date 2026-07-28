@@ -2,18 +2,21 @@ package com.astroluxeon.jltgbfv.model;
 
 import java.util.Map;
 import java.util.List;
+import java.util.Stack;
 
 public class GameState {
     private Map<String, Region> regions;
     private List<Challenge> challenges;
     private List<Challenge> battles;
+    private Stack<Integer> challengeHistory;
 
     public GameState() {}
 
-    public GameState(Map<String, Region> regions, List<Challenge> challenges, List<Challenge> battles) {
+    public GameState(Map<String, Region> regions, List<Challenge> challenges, List<Challenge> battles, Stack<Integer> challengeHistory) {
         this.regions = regions;
         this.challenges = challenges;
         this.battles = battles;
+        this.challengeHistory = challengeHistory;
     }
 
     public Map<String, Region> getRegions() {
@@ -38,5 +41,13 @@ public class GameState {
 
     public void setBattles(List<Challenge> battles) {
         this.battles = battles;
+    }
+
+    public Stack<Integer> getChallengeHistory() {
+        return challengeHistory;
+    }
+
+    public void setChallengeHistory(Stack<Integer> challengeHistory) {
+        this.challengeHistory = challengeHistory;
     }
 }
