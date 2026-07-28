@@ -1,46 +1,70 @@
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import './App.css'
 import Map from './Map';
-
-interface Challenge {
-  id: number;
-  description: string;
-  status: string;
-}
+import Challenges from './Challenges';
 
 function App() {
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [activeTab, setActiveTab] = useState<'map' | 'challenges'>('map');
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  useEffect(() => {
-    fetch('http://localhost:8080/api/challenges')
-        .then(response => response.json())
-        .then(data => setChallenges(data))
-  }, [])
-
-  const handleComplete = (challenge: Challenge) => {
-    fetch(`http://localhost:8080/api/challenges/${challenge.id}`, {
-      method: 'POST',
-    }).then(() => {
-      fetch('http://localhost:8080/api/challenges')
-          .then(response => response.json())
-          .then(data => setChallenges(data));
-    });
+  const handleReset = () => {
+    if (window.confirm("Are you sure you want to reset the game? All data will be lost.")) {
+      fetch('http://localhost:8080/api/reset', {
+        method: 'POST',
+      }).then(() => {
+        setRefreshKey(prevKey => prevKey + 1);
+      });
+    }
   };
 
   return (
-    <div>
-      <h1>Active Challenges:</h1>
-      <ul>
-        {challenges.map((challenge: Challenge) =>
-          <li key={challenge.id}>
-            {challenge.description}&nbsp;&nbsp;&nbsp;
-            <button onClick={() => handleComplete(challenge)}>Complete Challenge</button>
-          </li>
-        )}
-      </ul>
-      <Map />
+    <div style={{ width: '95%', margin: '0 auto', padding: '20px', fontFamily: 'sans-serif' }}>
+      <h1 style={{ textAlign: 'center' }}>JLTG: Battle for Vancouver</h1>
+
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px' }}>
+        <button
+          onClick={() => setActiveTab('map')}
+          style={{
+            padding: '10px 20px',
+            cursor: 'pointer',
+            backgroundColor: activeTab === 'map' ? '#333' : '#ddd',
+            color: activeTab === 'map' ? 'white' : 'black',
+            border: 'none',
+            borderRadius: '4px'
+          }}
+        >
+          Map
+        </button>
+        <button
+          onClick={() => setActiveTab('challenges')}
+          style={{
+            padding: '10px 20px',
+            cursor: 'pointer',
+            backgroundColor: activeTab === 'challenges' ? '#333' : '#ddd',
+            color: activeTab === 'challenges' ? 'white' : 'black',
+            border: 'none',
+            borderRadius: '4px'
+          }}
+        >
+          Challenges
+        </button>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'right', marginBottom: '20px' }}>
+        <button
+          onClick={handleReset}
+          style={{ backgroundColor: '#ff4444', color: 'white', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+        >
+          Reset Game
+        </button>
+      </div>
+
+      <div>
+        {activeTab === 'map' && <Map refreshKey={refreshKey} />}
+        {activeTab === 'challenges' && <Challenges refreshKey={refreshKey} />}
+      </div>
     </div>
-  )
+  );
 }
 
 export default App
