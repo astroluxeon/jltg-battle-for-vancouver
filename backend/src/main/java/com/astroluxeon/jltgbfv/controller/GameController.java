@@ -25,7 +25,12 @@ public class GameController {
 
     @GetMapping("/challenges")
     public List<Challenge> getChallenges() {
-        return gameService.getActiveChallenges();
+        return gameService.getChallenges();
+    }
+
+    @GetMapping("/battles")
+    public List<Challenge> getBattles() {
+        return gameService.getBattles();
     }
 
     @GetMapping("/regions")
@@ -34,8 +39,28 @@ public class GameController {
     }
 
     @PostMapping("/challenges/{id}")
-    public void completeChallenge(@PathVariable int id) {
-        gameService.completeChallenge(id);
+    public void completeChallenge(@PathVariable int id, @RequestParam String team) {
+        gameService.completeChallenge(id, team.toUpperCase());
+    }
+
+    @PostMapping("/challenges/{id}/undo")
+    public void undoChallenge(@PathVariable int id) {
+        gameService.undoChallenge(id);
+    }
+
+    @PostMapping("/battles/new")
+    public Challenge startBattle() {
+        return gameService.startBattle();
+    }
+
+    @PostMapping("battles/{id}")
+    public void completeBattle(@PathVariable int id, @RequestParam String team) {
+        gameService.completeBattle(id, team.toUpperCase());
+    }
+
+    @PostMapping("/battles/{id}/undo")
+    public void undoBattle(@PathVariable int id) {
+        gameService.undoBattle(id);
     }
 
     @PostMapping("/regions/{id}/claim")

@@ -21,6 +21,7 @@ public abstract class Challenge {
     private String name;
     private String description;
     private Status status;
+    private Team team;
 
     public Challenge() {}
 
@@ -29,6 +30,7 @@ public abstract class Challenge {
         this.name = name;
         this.description = description;
         this.status = Status.INACTIVE;
+        this.team = Team.NONE;
     }
 
     public int getId() {
@@ -61,6 +63,14 @@ public abstract class Challenge {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     @Override

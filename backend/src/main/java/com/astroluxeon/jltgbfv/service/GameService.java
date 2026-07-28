@@ -26,28 +26,52 @@ public class GameService {
         loadFromFile();
     }
 
-    public List<Challenge> getActiveChallenges() {
-        List<Challenge> active = new ArrayList<>();
-        for (Challenge c : challenges) {
-            if (c.getStatus() == Status.ACTIVE) {
-                active.add(c);
-            }
-        }
-        return active;
+    public List<Challenge> getChallenges() {
+        return challenges;
+    }
+
+    public List<Challenge> getBattles() {
+        return battles;
     }
 
     public Collection<Region> getRegions() {
         return regions.values();
     }
 
-    public void completeChallenge(int id) {
-        challenges.get(id).setStatus(Status.COMPLETED);
-        for (int i = id + 1; i < challenges.size(); i++) {
-            if (challenges.get(i).getStatus() == Status.INACTIVE) {
-                challenges.get(i).setStatus(Status.ACTIVE);
-                saveToFile();
-                break;
+    public void completeChallenge(int id, String team) {
+        try {
+            challenges.get(id).setStatus(Status.COMPLETED);
+            challenges.get(id).setTeam(Team.valueOf(team));
+            for (int i = id + 1; i < challenges.size(); i++) {
+                if (challenges.get(i).getStatus() == Status.INACTIVE) {
+                    challenges.get(i).setStatus(Status.ACTIVE);
+                    saveToFile();
+                    break;
+                }
             }
+        } catch (Exception e) {
+            System.out.println(team + " is not a valid team.");
+        }
+    }
+
+    public Challenge startBattle() {
+        for (int i = 0; i < battles.size(); i++) {
+            if (battles.get(i).getStatus() == Status.INACTIVE) {
+                battles.get(i).setStatus(Status.ACTIVE);
+                saveToFile();
+                return battles.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void completeBattle(int id, String team) {
+        try {
+            battles.get(id).setStatus(Status.COMPLETED);
+            battles.get(id).setTeam(Team.valueOf(team));
+            saveToFile();
+        } catch (Exception e) {
+            System.out.println(team + " is not a valid team.");
         }
     }
 
@@ -73,6 +97,40 @@ public class GameService {
         }
     }
 
+    public void undoChallenge(int id) {
+        for (Challenge c : challenges) {
+            if (c.getId() == id) {
+                c.setStatus(Status.ACTIVE);
+                c.setTeam(Team.NONE);
+                saveToFile();
+                break;
+            }
+        }
+
+        for (int i = challenges.size() - 1; i >= 0; i--) {
+            if (challenges.get(i).getStatus() == Status.ACTIVE && challenges.get(i).getId() != id) {
+                challenges.get(i).setStatus(Status.INACTIVE);
+                break;
+            }
+        }
+    }
+
+    public void undoBattle(int id) {
+        for (Challenge c : battles) {
+            if (c.getId() == id) {
+                if (c.getStatus() == Status.COMPLETED) {
+                    c.setStatus(Status.ACTIVE);
+                    c.setTeam(Team.NONE);
+                } else if (c.getStatus() == Status.ACTIVE) {
+                    c.setStatus(Status.INACTIVE);
+                    c.setTeam(Team.NONE);
+                }
+                saveToFile();
+                break;
+            }
+        }
+    }
+
     public void initializeNewGame() {
 //        File file = new File(DEFAULT_FILE);
 //        if (file.exists()) {
@@ -80,6 +138,7 @@ public class GameService {
 //                GameState state = objectMapper.readValue(file, GameState.class);
 //                this.regions = state.getRegions();
 //                this.challenges = state.getChallenges();
+//                this.battles = state.getBattles();
 //                System.out.println("Initialized new game.");
 //            } catch (IOException e) {
 //                System.out.println("Error initializing game: " + e.getMessage());
@@ -90,6 +149,7 @@ public class GameService {
 
         this.regions = new HashMap<>();
         this.challenges = new ArrayList<>();
+        this.battles = new ArrayList<>();
 
         regions.put("arbutus", new Region("arbutus", "Arbutus Ridge"));
         regions.put("grandview", new Region("grandview", "Grandview-Woodland"));
@@ -138,6 +198,7 @@ public class GameService {
                 GameState state = objectMapper.readValue(file, GameState.class);
                 this.regions = state.getRegions();
                 this.challenges = state.getChallenges();
+                this.battles = state.getBattles();
                 System.out.println("Loaded data from file.");
             } catch (IOException e) {
                 System.out.println("Error reading file: " + e.getMessage());
@@ -149,27 +210,9 @@ public class GameService {
         }
     }
 
-    private void loadDefault() {
-        File file = new File(DEFAULT_FILE);
-        if (file.exists()) {
-            try {
-                GameState state = objectMapper.readValue(file, GameState.class);
-                this.regions = state.getRegions();
-                this.challenges = state.getChallenges();
-                System.out.println("Loaded data from file.");
-            } catch (IOException e) {
-                System.out.println("Error reading file: " + e.getMessage());
-                initializeNewGame();
-            }
-        } else {
-            System.out.println("No file found.");
-            initializeNewGame();
-        }
-    }
-
     private void saveToFile() {
         try {
-            GameState state = new GameState(this.regions, this.challenges);
+            GameState state = new GameState(this.regions, this.challenges, this.battles);
             objectMapper.writeValue(new File(DATA_FILE), state);
         } catch (IOException e) {
             System.out.println("Error saving file: " + e.getMessage());
