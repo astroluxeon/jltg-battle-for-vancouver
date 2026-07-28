@@ -7,6 +7,8 @@ public class Challenge {
     private String description;
     private Status status;
 
+    public Challenge() {}
+
     public Challenge(int id, String description) {
         this.id = id;
         this.description = description;

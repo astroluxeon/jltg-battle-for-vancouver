@@ -6,6 +6,8 @@ public class Region {
     private Team team;
     private boolean locked;
 
+    public Region() {}
+
     public Region(String id, String name) {
         this.id = id;
         this.name = name;

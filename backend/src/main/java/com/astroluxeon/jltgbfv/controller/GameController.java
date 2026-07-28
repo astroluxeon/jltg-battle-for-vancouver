@@ -1,4 +1,4 @@
-package com.astroluxeon.jltgbfv;
+package com.astroluxeon.jltgbfv.controller;
 
 import com.astroluxeon.jltgbfv.model.Region;
 import com.astroluxeon.jltgbfv.service.GameService;
@@ -20,7 +20,7 @@ public class GameController {
 
     @GetMapping("/status")
     public String status() {
-        return "Backend is running";
+        return "Success";
     }
 
     @GetMapping("/challenges")
@@ -46,5 +46,10 @@ public class GameController {
     @PostMapping("/regions/{id}/lock")
     public void lockRegion(@PathVariable String id, @RequestParam boolean lock) {
         gameService.lockRegion(id, lock);
+    }
+
+    @PostMapping("/reset")
+    public void resetGame() {
+        gameService.initializeNewGame();
     }
 }
