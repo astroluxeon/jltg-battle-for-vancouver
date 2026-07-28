@@ -93,13 +93,13 @@ export default function Challenges({ refreshKey }: ChallengesProps) {
                 onClick={() => handleCompleteBattle(activeBattle, 'RED')}
                 style={{ backgroundColor: '#cc0000', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
               >
-                Red Wins
+                Red Win
               </button>
               <button
                 onClick={() => handleCompleteBattle(activeBattle, 'BLUE')}
                 style={{ backgroundColor: '#0000cc', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
               >
-                Blue Wins
+                Blue Win
               </button>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function Challenges({ refreshKey }: ChallengesProps) {
 
       <div>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
-          <h3 style={{ margin: 0 }}>Active Challenges</h3>
+          <h3 style={{ margin: 0 }}>Challenges</h3>
 
           {challenges.some(c => c.status === 'COMPLETED') && (
             <button
