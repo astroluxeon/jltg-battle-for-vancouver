@@ -8,11 +8,11 @@ public class GameState {
     private Map<String, Region> regions;
     private List<Challenge> challenges;
     private List<Challenge> battles;
-    private Stack<Integer> challengeHistory;
+    private Stack<Pair<Integer, Integer>> challengeHistory;
 
     public GameState() {}
 
-    public GameState(Map<String, Region> regions, List<Challenge> challenges, List<Challenge> battles, Stack<Integer> challengeHistory) {
+    public GameState(Map<String, Region> regions, List<Challenge> challenges, List<Challenge> battles, Stack<Pair<Integer, Integer>> challengeHistory) {
         this.regions = regions;
         this.challenges = challenges;
         this.battles = battles;
@@ -43,11 +43,11 @@ public class GameState {
         this.battles = battles;
     }
 
-    public Stack<Integer> getChallengeHistory() {
+    public Stack<Pair<Integer, Integer>> getChallengeHistory() {
         return challengeHistory;
     }
 
-    public void setChallengeHistory(Stack<Integer> challengeHistory) {
+    public void setChallengeHistory(Stack<Pair<Integer, Integer>> challengeHistory) {
         this.challengeHistory = challengeHistory;
     }
 }

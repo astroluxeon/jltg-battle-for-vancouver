@@ -17,7 +17,7 @@ public class GameService {
     private Map<String, Region> regions;
     private List<Challenge> challenges;
     private List<Challenge> battles;
-    private Stack<Integer> challengeHistory;
+    private Stack<Pair<Integer, Integer>> challengeHistory;
 
     public GameService() {
         loadFromFile();
@@ -36,20 +36,27 @@ public class GameService {
     }
 
     public void completeChallenge(int id, String team) {
-        try {
-            challenges.get(id).setStatus(Status.COMPLETED);
-            challenges.get(id).setTeam(Team.valueOf(team));
-            challengeHistory.push(id);
-            for (int i = id + 1; i < challenges.size(); i++) {
-                if (challenges.get(i).getStatus() == Status.INACTIVE) {
-                    challenges.get(i).setStatus(Status.ACTIVE);
-                    saveToFile();
-                    break;
-                }
+        int id2 = -1;
+
+        for (Challenge c : challenges) {
+            if (c.getId() == id) {
+                c.setStatus(Status.COMPLETED);
+                c.setTeam(Team.valueOf(team));
+                break;
             }
-        } catch (Exception e) {
-            System.out.println(team + " is not a valid team.");
         }
+
+        for (Challenge c : challenges) {
+            if (c.getStatus() == Status.INACTIVE) {
+                c.setStatus(Status.ACTIVE);
+                id2 = c.getId();
+                break;
+            }
+        }
+
+        challengeHistory.push(new Pair<>(id, id2));
+
+        saveToFile();
     }
 
     public Challenge startBattle() {
@@ -100,21 +107,24 @@ public class GameService {
             return;
         }
 
-        int lastCompletedId = challengeHistory.pop();
+        Pair<Integer, Integer> top = challengeHistory.pop();
+        int id1 = top.key();
+        int id2 = top.value();
 
         for (Challenge challenge : challenges) {
-            if (challenge.getId() == lastCompletedId) {
+            if (challenge.getId() == id1) {
                 challenge.setStatus(Status.ACTIVE);
                 challenge.setTeam(Team.NONE);
                 break;
             }
         }
 
-        for (int i = challenges.size() - 1; i >= 0; i--) {
-            Challenge c = challenges.get(i);
-            if (c.getStatus() == Status.ACTIVE && c.getId() != lastCompletedId) {
-                c.setStatus(Status.INACTIVE);
-                break;
+        if (id2 != -1) {
+            for (Challenge challenge : challenges) {
+                if (challenge.getId() == id2) {
+                    challenge.setStatus(Status.INACTIVE);
+                    break;
+                }
             }
         }
 
