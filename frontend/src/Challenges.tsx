@@ -49,8 +49,8 @@ export default function Challenges({ refreshKey }: ChallengesProps) {
     }).then(() => fetchData());
   };
 
-  const handleUndoChallenge = (challenge: Challenge) => {
-    fetch(`http://localhost:8080/api/challenges/${challenge.id}/undo`, {
+  const handleUndoChallenge = () => {
+    fetch(`http://localhost:8080/api/challenges/undo`, {
       method: 'POST',
     }).then(() => fetchData());
   };
@@ -128,7 +128,21 @@ export default function Challenges({ refreshKey }: ChallengesProps) {
       </div>
 
       <div>
-        <h3 style={{ textAlign: 'center' }}>Active Challenges</h3>
+        {/* 2. Group the Header and the new Global Undo Button together */}
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
+          <h3 style={{ margin: 0 }}>Active Challenges</h3>
+
+          {/* Only render the undo button if the stack isn't empty (there is at least 1 completed challenge) */}
+          {challenges.some(c => c.status === 'COMPLETED') && (
+            <button
+              onClick={handleUndoChallenge}
+              style={{ backgroundColor: '#888', color: 'white', padding: '4px 8px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}
+            >
+              Undo Last
+            </button>
+          )}
+        </div>
+
         <ul style={{ listStyleType: 'none', padding: 0 }}>
           {challenges
             .filter((challenge: Challenge) => challenge.type === 'claim' && challenge.status !== 'INACTIVE')
@@ -156,36 +170,28 @@ export default function Challenges({ refreshKey }: ChallengesProps) {
                   <strong>{challenge.name}</strong>:&nbsp;{challenge.description}
                 </div>
 
-                <div style={{
-                  position: 'absolute',
-                  right: '10px',
-                  display: 'flex',
-                  gap: '8px'
-                }}>
-                  {challenge.status === 'COMPLETED' ? (
+                {/* 3. The individual Undo button is gone! We only render Red/Blue if it's active. */}
+                {challenge.status !== 'COMPLETED' && (
+                  <div style={{
+                    position: 'absolute',
+                    right: '10px',
+                    display: 'flex',
+                    gap: '8px'
+                  }}>
                     <button
-                      onClick={() => handleUndoChallenge(challenge)}
-                      style={{ backgroundColor: '#888', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                      onClick={() => handleCompleteChallenge(challenge, 'RED')}
+                      style={{ backgroundColor: '#cc0000', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
                     >
-                      Undo Complete
+                      Red Complete
                     </button>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => handleCompleteChallenge(challenge, 'RED')}
-                        style={{ backgroundColor: '#cc0000', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-                      >
-                        Red Complete
-                      </button>
-                      <button
-                        onClick={() => handleCompleteChallenge(challenge, 'BLUE')}
-                        style={{ backgroundColor: '#0000cc', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-                      >
-                        Blue Complete
-                      </button>
-                    </>
-                  )}
-                </div>
+                    <button
+                      onClick={() => handleCompleteChallenge(challenge, 'BLUE')}
+                      style={{ backgroundColor: '#0000cc', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                    >
+                      Blue Complete
+                    </button>
+                  </div>
+                )}
               </li>
             ))}
         </ul>
