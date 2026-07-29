@@ -199,15 +199,15 @@ public class GameService {
         regions.put("kensington", new Region("kensington", "Kensington-Cedar Cottage"));
         regions.put("kitsilano", new Region("kitsilano", "Kitsilano"));
 
-        challenges.add(new ClaimChallenge(0, "Challenge 1", "Challenge 1"));
-        challenges.add(new ClaimChallenge(1, "Challenge 2", "Challenge 2"));
-        challenges.add(new ClaimChallenge(2, "Challenge 3", "Challenge 3"));
-        challenges.add(new ClaimChallenge(3, "Challenge 4", "Challenge 4"));
-        challenges.add(new ClaimChallenge(4, "Challenge 5", "Challenge 5"));
+        challenges.add(new ClaimChallenge(1, "Challenge 1", "Challenge 1"));
+        challenges.add(new ClaimChallenge(2, "Challenge 2", "Challenge 2"));
+        challenges.add(new ClaimChallenge(3, "Challenge 3", "Challenge 3"));
+        challenges.add(new ClaimChallenge(4, "Challenge 4", "Challenge 4"));
+        challenges.add(new ClaimChallenge(5, "Challenge 5", "Challenge 5"));
 
-        battles.add(new BattleChallenge(0, "Battle 1", "Battle 1"));
-        battles.add(new BattleChallenge(1, "Battle 2", "Battle 2"));
-        battles.add(new BattleChallenge(2, "Battle 3", "Battle 3"));
+        battles.add(new BattleChallenge(1, "Battle 1", "Battle 1"));
+        battles.add(new BattleChallenge(2, "Battle 2", "Battle 2"));
+        battles.add(new BattleChallenge(3, "Battle 3", "Battle 3"));
 
         Collections.shuffle(challenges);
         Collections.shuffle(battles);
