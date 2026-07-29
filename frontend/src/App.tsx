@@ -8,18 +8,22 @@ function App() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleReset = () => {
-    if (window.confirm("Are you sure you want to reset the game? All data will be lost.")) {
+    const keyword = window.prompt("To reset the game, enter \"bloodorange\" below:");
+    if (keyword === "bloodorange") {
       fetch('http://localhost:8080/api/reset', {
         method: 'POST',
       }).then(() => {
         setRefreshKey(prevKey => prevKey + 1);
+        alert("Game successfully reset.");
       });
+    } else if (keyword !== null) {
+      alert("Reset canceled.");
     }
   };
 
   return (
     <div style={{ width: '95%', margin: '0 auto', padding: '20px', fontFamily: 'sans-serif' }}>
-      <h1 style={{ textAlign: 'center' }}>JLTG: Battle for Vancouver</h1>
+      <h1 style={{ textAlign: 'center' }}>Jet Lag: The Game – Battle for Vancouver</h1>
       <h3 style={{ textAlign: 'center' }}>Fruit Market Edition</h3>
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px' }}>
@@ -48,6 +52,19 @@ function App() {
           }}
         >
           Challenges
+        </button>
+        <button
+          onClick={() => window.open('https://docs.google.com/document/d/1uHxpWV_sGMHQ17T4hG_Qxm5JjJ_uNXeDSoafO_Ndc8Q/edit?usp=sharing', '_blank', 'noopener,noreferrer')}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#ddd',
+            color: 'black',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Rules
         </button>
       </div>
 
