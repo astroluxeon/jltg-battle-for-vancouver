@@ -79,7 +79,7 @@ export default function Challenges({ refreshKey }: ChallengesProps) {
         {activeBattle ? (
           <div>
             <div style={{ fontSize: '18px', marginBottom: '15px' }}>
-              <strong>{activeBattle.name}:</strong> {activeBattle.description}
+              <strong>{activeBattle.id}.&nbsp;{activeBattle.name}:</strong> {activeBattle.description}
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
@@ -165,7 +165,7 @@ export default function Challenges({ refreshKey }: ChallengesProps) {
                 }}
               >
                 <div style={{ textAlign: 'center', padding: '0 160px' }}>
-                  <strong>{challenge.name}</strong>:&nbsp;{challenge.description}
+                  <strong>{challenge.id}.&nbsp;{challenge.name}</strong>:&nbsp;{challenge.description}
                 </div>
 
                 {challenge.status !== 'COMPLETED' && (
