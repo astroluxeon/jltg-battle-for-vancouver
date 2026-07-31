@@ -1,19 +1,18 @@
 import {useState} from 'react'
+import { API_BASE_URL } from './config';
 import './App.css'
 import Map from './Map';
 import Challenges from './Challenges';
 
 function App() {
   const [activeTab, setActiveTab] = useState<'map' | 'challenges'>('map');
-  const [refreshKey, setRefreshKey] = useState(0);
 
   const handleReset = () => {
     const keyword = window.prompt("To reset the game, enter \"bloodorange\" below:");
     if (keyword === "bloodorange") {
-      fetch('http://localhost:8080/api/reset', {
+      fetch(`${API_BASE_URL}/reset`, {
         method: 'POST',
       }).then(() => {
-        setRefreshKey(prevKey => prevKey + 1);
         alert("Game successfully reset.");
       });
     } else if (keyword !== null) {
@@ -78,8 +77,8 @@ function App() {
       </div>
 
       <div>
-        {activeTab === 'map' && <Map refreshKey={refreshKey} />}
-        {activeTab === 'challenges' && <Challenges refreshKey={refreshKey} />}
+        {activeTab === 'map' && <Map />}
+        {activeTab === 'challenges' && <Challenges />}
       </div>
     </div>
   );
