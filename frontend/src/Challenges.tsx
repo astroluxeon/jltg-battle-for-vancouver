@@ -102,7 +102,7 @@ export default function Challenges() {
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
               <button
                 onClick={() => handleUndoBattle(activeBattle)}
-                style={{ backgroundColor: '#666', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                style={{ backgroundColor: '#666666', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
               >
                 Undo Start Battle
               </button>
@@ -122,13 +122,13 @@ export default function Challenges() {
           </div>
         ) : (
           <div>
-            <p style={{ color: '#666', fontStyle: 'italic' }}>No battles are currently active.</p>
+            <p style={{ color: '#666666', fontStyle: 'italic' }}>No battles are currently active.</p>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
               {lastCompletedBattle && (
                 <button
                   onClick={() => handleUndoBattle(lastCompletedBattle)}
-                  style={{ backgroundColor: '#666', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                  style={{ backgroundColor: '#666666', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
                 >
                   Undo Last Battle Win
                 </button>
@@ -151,9 +151,9 @@ export default function Challenges() {
           {challenges.some(c => c.status === 'COMPLETED') && (
             <button
               onClick={handleUndoChallenge}
-              style={{ backgroundColor: '#888', color: 'white', padding: '4px 8px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}
+              style={{ backgroundColor: '#666666', color: 'white', padding: '4px 8px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}
             >
-              Undo Complete Challenge
+              Undo Complete/Skip Challenge
             </button>
           )}
         </div>
@@ -175,7 +175,7 @@ export default function Challenges() {
                   padding: '15px 10px',
                   borderBottom: '1px solid #eee',
                   textDecoration: challenge.status === 'COMPLETED' ? 'line-through' : 'none',
-                  color: challenge.status === 'COMPLETED' ? '#888' : '#000',
+                  color: challenge.status === 'COMPLETED' ? '#888888' : '#000000',
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center'
@@ -203,6 +203,12 @@ export default function Challenges() {
                       style={{ backgroundColor: '#0000cc', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
                     >
                       Blue Complete
+                    </button>
+                    <button
+                      onClick={() => handleCompleteChallenge(challenge, 'NONE')}
+                      style={{ backgroundColor: '#666666', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                    >
+                      Skip
                     </button>
                   </div>
                 )}
