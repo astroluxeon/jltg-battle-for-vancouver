@@ -56,19 +56,25 @@ public class GameService {
         return null;
     }
 
-    public void completeChallenge(int id, String team) {
+    public synchronized void completeChallenge(int id, String team) {
+        Challenge challenge = null;
+
         for (Challenge c : challenges) {
             if (c.getId() == id) {
-                c.setStatus(Status.COMPLETED);
-                c.setTeam(Team.valueOf(team));
+                challenge = c;
                 break;
             }
         }
 
-        Challenge c = drawCard(challenges);
-        int id2 = c != null ? c.getId() : -1;
-        challengeHistory.push(new Pair<>(id, id2));
-        saveToFile();
+        if (challenge != null && challenge.getStatus() == Status.ACTIVE) {
+            challenge.setStatus(Status.COMPLETED);
+            challenge.setTeam(Team.valueOf(team));
+
+            Challenge c = drawCard(challenges);
+            int id2 = c != null ? c.getId() : -1;
+            challengeHistory.push(new Pair<>(id, id2));
+            saveToFile();
+        }
     }
 
     public Challenge startBattle() {
