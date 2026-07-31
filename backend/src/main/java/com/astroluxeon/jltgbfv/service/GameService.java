@@ -83,13 +83,20 @@ public class GameService {
         return c;
     }
 
-    public void completeBattle(int id, String team) {
-        try {
-            battles.get(id).setStatus(Status.COMPLETED);
-            battles.get(id).setTeam(Team.valueOf(team));
+    public synchronized void completeBattle(int id, String team) {
+        Challenge battle = null;
+
+        for (Challenge c : battles) {
+            if (c.getId() == id) {
+                battle = c;
+                break;
+            }
+        }
+
+        if (battle != null && battle.getStatus() == Status.ACTIVE) {
+            battle.setStatus(Status.COMPLETED);
+            battle.setTeam(Team.valueOf(team));
             saveToFile();
-        } catch (Exception e) {
-            System.out.println(team + " is not a valid team.");
         }
     }
 
