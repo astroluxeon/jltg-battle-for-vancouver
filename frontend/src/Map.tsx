@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-interface MapProps {
-  refreshKey: number;
-}
+import { API_BASE_URL } from './config';
 
 interface Region {
   id: string;
@@ -11,28 +8,55 @@ interface Region {
   locked: boolean;
 }
 
-export default function Map({ refreshKey }: MapProps) {
+export default function Map() {
   const [regions, setRegions] = useState<Region[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/regions')
-      .then(response => response.json())
-      .then(data => {
-        setRegions(data);
-        setSelectedRegion(null);
-      });
-  }, [refreshKey]);
+    const fetchRegions = () => {
+      if (navigator.onLine && document.visibilityState === 'visible') {
+        fetch(`${API_BASE_URL}/regions`)
+          .then(response => response.json())
+          .then(data => {
+            setRegions(data);
+
+            setSelectedRegion(currentSelected => {
+              if (!currentSelected) return null;
+              return data.find((r: Region) => r.id === currentSelected.id) || null;
+            });
+          })
+          .catch(error => console.error("Failed to fetch regions: ", error));
+      }
+    };
+
+    fetchRegions();
+
+    const intervalId = setInterval(() => {
+      fetchRegions();
+    }, 2000);
+
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        fetchRegions();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      clearInterval(intervalId);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
+  }, []);
 
   const redScore = regions.filter(r => r.team === 'RED').length;
   const blueScore = regions.filter(r => r.team === 'BLUE').length;
 
   const updateRegion = (actionUrl: string) => {
     if (selectedRegion) {
-      fetch(`http://localhost:8080/api/regions/${selectedRegion.id}/${actionUrl}`, {
+      fetch(`${API_BASE_URL}/regions/${selectedRegion.id}/${actionUrl}`, {
         method: 'POST',
       }).then(() => {
-        fetch('http://localhost:8080/api/regions')
+        fetch(`${API_BASE_URL}/regions`)
           .then(response => response.json())
           .then(data => setRegions(data));
         setSelectedRegion(null);
