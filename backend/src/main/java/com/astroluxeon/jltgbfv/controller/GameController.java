@@ -4,6 +4,8 @@ import com.astroluxeon.jltgbfv.model.Region;
 import com.astroluxeon.jltgbfv.service.GameService;
 import com.astroluxeon.jltgbfv.model.Challenge;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Collection;
 import java.util.List;
@@ -74,7 +76,12 @@ public class GameController {
     }
 
     @PostMapping("/reset")
-    public void resetGame() {
+    public ResponseEntity<String> resetGame(@RequestHeader(value = "Reset-Key", required = false) String resetKey) {
+        if (!resetKey.equals("bloodorange")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized reset attempt.");
+        }
+
         gameService.initializeNewGame();
+        return ResponseEntity.ok("Game successfully reset.");
     }
 }

@@ -9,14 +9,22 @@ function App() {
 
   const handleReset = () => {
     const keyword = window.prompt("To reset the game, enter \"bloodorange\" below:");
-    if (keyword === "bloodorange") {
+
+    if (keyword !== null) {
       fetch(`${API_BASE_URL}/reset`, {
         method: 'POST',
-      }).then(() => {
-        alert("Game successfully reset.");
+        headers: {
+          'Reset-Key': keyword
+        }
+      }).then(response => {
+        if (response.ok) {
+          alert("Game successfully reset.");
+        } else {
+          alert("Incorrect keyword.");
+        }
+      }).catch(error => {
+        console.error("Error connecting to server:", error);
       });
-    } else if (keyword !== null) {
-      alert("Reset canceled.");
     }
   };
 
