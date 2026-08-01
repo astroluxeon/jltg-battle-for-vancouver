@@ -211,13 +211,13 @@ public class GameService {
                 this.challenges = state.getChallenges();
                 this.battles = state.getBattles();
                 this.challengeHistory = state.getChallengeHistory() != null ? state.getChallengeHistory() : new Stack<>();
-                System.out.println("Loaded saved data from file.");
+                System.out.println("Loaded save data.");
             } catch (IOException e) {
-                System.out.println("Error reading file: " + e.getMessage());
+                System.out.println("Error reading save data: " + e.getMessage());
                 initializeNewGame();
             }
         } else {
-            System.out.println("No save file found.");
+            System.out.println("No save data found.");
             initializeNewGame();
         }
     }
