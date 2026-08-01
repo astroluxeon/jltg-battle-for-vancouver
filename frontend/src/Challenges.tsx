@@ -137,7 +137,7 @@ export default function Challenges() {
                 onClick={handleStartBattle}
                 style={{ backgroundColor: '#cc0000', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
               >
-                Start Next Battle Challenge
+                Start Battle Challenge
               </button>
             </div>
           </div>
