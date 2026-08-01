@@ -162,7 +162,7 @@
       "type": "claim",
       "id": 4,
       "name": "The Floor is Lava",
-      "description": "Travel a distance of at least 300 meters, measured between your start and end points, without your feet ever touching a concrete or paved public sidewalk.",
+      "description": "Travel a distance of at least 800 meters, measured between your start and end points, without your feet ever touching a paved road or sidewalk.",
       "status": "INACTIVE",
       "team": "NONE"
     },
