@@ -191,11 +191,8 @@ public class GameService {
             this.challengeHistory = new Stack<>();
         }
 
-        Collections.shuffle(challenges);
-        Collections.shuffle(battles);
-
         for (int i = 0; i < ACTIVE_DECK_SIZE; i++) {
-            challenges.get(i).setStatus(Status.ACTIVE);
+            drawCard(challenges);
         }
 
         System.out.println("Initialized new game.");
