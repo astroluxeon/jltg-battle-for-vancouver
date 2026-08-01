@@ -173,6 +173,7 @@ export default function Challenges() {
                   position: 'relative',
                   marginBottom: '10px',
                   padding: '15px 10px',
+                  minHeight: '120px',
                   borderBottom: '1px solid #eee',
                   textDecoration: challenge.status === 'COMPLETED' ? 'line-through' : 'none',
                   color: challenge.status === 'COMPLETED' ? '#888888' : '#000000',
@@ -190,6 +191,7 @@ export default function Challenges() {
                     position: 'absolute',
                     right: '10px',
                     display: 'flex',
+                    flexDirection: 'column',
                     gap: '8px'
                   }}>
                     <button
