@@ -11,7 +11,7 @@ import java.util.*;
 
 @Service
 public class GameService {
-    private final int ACTIVE_DECK_SIZE = 3;
+    private final int ACTIVE_DECK_SIZE = 6;
     private final String DATA_FILE = "game-data.json";
     private final String DEFAULT_FILE = "game-default.json";
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -168,59 +168,28 @@ public class GameService {
     }
 
     public void initializeNewGame() {
-//        File file = new File(DEFAULT_FILE);
-//        if (file.exists()) {
-//            try {
-//                GameState state = objectMapper.readValue(file, GameState.class);
-//                this.regions = state.getRegions();
-//                this.challenges = state.getChallenges();
-//                this.battles = state.getBattles();
-//                this.challengeHistory = state.getChallengeHistory();
-//                System.out.println("Initialized new game.");
-//            } catch (IOException e) {
-//                System.out.println("Error initializing game: " + e.getMessage());
-//            }
-//        } else {
-//            System.out.println("No data found.");
-//        }
-
-        this.regions = new HashMap<>();
-        this.challenges = new ArrayList<>();
-        this.battles = new ArrayList<>();
-        this.challengeHistory = new Stack<>();
-
-        regions.put("arbutus", new Region("arbutus", "Arbutus Ridge"));
-        regions.put("grandview", new Region("grandview", "Grandview-Woodland"));
-        regions.put("killarney", new Region("killarney", "Killarney"));
-        regions.put("strathcona", new Region("strathcona", "Strathcona"));
-        regions.put("sunset", new Region("sunset", "Sunset"));
-        regions.put("hastings", new Region("hastings", "Hastings-Sunrise"));
-        regions.put("kerrisdale", new Region("kerrisdale", "Kerrisdale"));
-        regions.put("south-cambie", new Region("south-cambie", "South Cambie"));
-        regions.put("riley-park", new Region("riley-park", "Riley Park"));
-        regions.put("shaughnessy", new Region("shaughnessy", "Shaughnessy"));
-        regions.put("fraserview", new Region("fraserview", "Victoria-Fraserview"));
-        regions.put("west-point-grey", new Region("west-point-grey", "West Point Grey"));
-        regions.put("mount-pleasant", new Region("mount-pleasant", "Mount Pleasant"));
-        regions.put("collingwood", new Region("collingwood", "Renfrew-Collingwood"));
-        regions.put("west-end", new Region("west-end", "West End"));
-        regions.put("downtown", new Region("downtown", "Downtown"));
-        regions.put("marpole", new Region("marpole", "Marpole"));
-        regions.put("oakridge", new Region("oakridge", "Oakridge"));
-        regions.put("dunbar", new Region("dunbar", "Dunbar-Southlands"));
-        regions.put("fairview", new Region("fairview", "Fairview"));
-        regions.put("kensington", new Region("kensington", "Kensington-Cedar Cottage"));
-        regions.put("kitsilano", new Region("kitsilano", "Kitsilano"));
-
-        challenges.add(new ClaimChallenge(1, "Challenge 1", "Challenge 1"));
-        challenges.add(new ClaimChallenge(2, "Challenge 2", "Challenge 2"));
-        challenges.add(new ClaimChallenge(3, "Challenge 3", "Challenge 3"));
-        challenges.add(new ClaimChallenge(4, "Challenge 4", "Challenge 4"));
-        challenges.add(new ClaimChallenge(5, "Challenge 5", "Challenge 5"));
-
-        battles.add(new BattleChallenge(1, "Battle 1", "Battle 1"));
-        battles.add(new BattleChallenge(2, "Battle 2", "Battle 2"));
-        battles.add(new BattleChallenge(3, "Battle 3", "Battle 3"));
+        File file = new File(DEFAULT_FILE);
+        if (file.exists()) {
+            try {
+                GameState state = objectMapper.readValue(file, GameState.class);
+                this.regions = state.getRegions();
+                this.challenges = state.getChallenges();
+                this.battles = state.getBattles();
+                this.challengeHistory = state.getChallengeHistory();
+            } catch (IOException e) {
+                System.out.println("Error initializing game: " + e.getMessage());
+                this.regions = new HashMap<>();
+                this.challenges = new ArrayList<>();
+                this.battles = new ArrayList<>();
+                this.challengeHistory = new Stack<>();
+            }
+        } else {
+            System.out.println("No data found.");
+            this.regions = new HashMap<>();
+            this.challenges = new ArrayList<>();
+            this.battles = new ArrayList<>();
+            this.challengeHistory = new Stack<>();
+        }
 
         Collections.shuffle(challenges);
         Collections.shuffle(battles);
@@ -242,7 +211,7 @@ public class GameService {
                 this.challenges = state.getChallenges();
                 this.battles = state.getBattles();
                 this.challengeHistory = state.getChallengeHistory() != null ? state.getChallengeHistory() : new Stack<>();
-                System.out.println("Loaded data from file.");
+                System.out.println("Loaded saved data from file.");
             } catch (IOException e) {
                 System.out.println("Error reading file: " + e.getMessage());
                 initializeNewGame();
