@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import { API_BASE_URL } from './config';
 
 interface Region {
@@ -48,8 +48,12 @@ export default function Map() {
     };
   }, []);
 
-  const redScore = regions.filter(r => r.team === 'RED').length;
-  const blueScore = regions.filter(r => r.team === 'BLUE').length;
+  const redScore = useMemo(() => {
+    return regions.filter(r => r.team === 'RED').length;
+  }, [regions]);
+  const blueScore = useMemo(() => {
+    return regions.filter(r => r.team === 'BLUE').length;
+  }, [regions]);
 
   const updateRegion = (actionUrl: string) => {
     if (selectedRegion) {
