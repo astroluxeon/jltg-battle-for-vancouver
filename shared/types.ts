@@ -1,6 +1,6 @@
-export type Team = 'NONE' | 'BLUE' | 'RED';
 export type Type = 'CLAIM' | 'BATTLE';
 export type Status = 'INACTIVE' | 'ACTIVE' | 'COMPLETED';
+export type Team = 'NONE' | 'BLUE' | 'RED';
 
 export interface GameData {
   regions: Record<string, Region>;
