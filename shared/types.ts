@@ -1,6 +1,14 @@
 export type Team = 'NONE' | 'BLUE' | 'RED';
-export type Status = 'INACTIVE' | 'ACTIVE' | 'COMPLETED';
 export type Type = 'CLAIM' | 'BATTLE';
+export type Status = 'INACTIVE' | 'ACTIVE' | 'COMPLETED';
+
+export interface GameData {
+  regions: Record<string, Region>;
+  challenges: Challenge[];
+  battles: Challenge[];
+  challengeHistory: [number, number][];
+  battleHistory: number[];
+}
 
 export interface Region {
   id: string;
