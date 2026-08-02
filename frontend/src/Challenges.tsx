@@ -86,7 +86,7 @@ export default function Challenges() {
           </div>
         ) : (
           <div>
-            <p style={{ color: '#666666', fontStyle: 'italic' }}>No Active Battle Challenge.</p>
+            <p style={{ color: '#666666', fontStyle: 'italic' }}>No Active Battle Challenge</p>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
               {lastCompletedBattle && (
