@@ -28,7 +28,7 @@ const pushGameState = () => {
 };
 
 io.on('connection', (socket) => {
-  console.log('A client connected to the dashboard');
+  console.log('Client connected.');
   socket.emit('gameStateUpdate', {
     regions: gameService.getRegions(),
     challenges: gameService.getChallenges(),
