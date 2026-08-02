@@ -1,77 +1,49 @@
-import {useEffect, useState} from 'react'
-import {API_BASE_URL} from './config';
+import {useEffect, useState} from 'react';
+import {io} from 'socket.io-client';
+import {SERVER_URL} from './config';
 import {Challenge, Team} from '../../shared/types';
+
+const API_BASE_URL = `${SERVER_URL}/api`;
 
 export default function Challenges() {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [battles, setBattles] = useState<Challenge[]>([]);
 
-  const fetchData = () => {
-    if (navigator.onLine && document.visibilityState === 'visible') {
-      fetch(`${API_BASE_URL}/challenges`)
-        .then(response => response.json())
-        .then(data => setChallenges(data))
-        .catch(error => console.error("Failed to fetch challenges: ", error));
-
-      fetch(`${API_BASE_URL}/battles`)
-        .then(response => response.json())
-        .then(data => setBattles(data))
-        .catch(error => console.error("Failed to fetch battles: ", error));
-    }
-  };
-
   useEffect(() => {
-    fetchData();
+    const socket = io(SERVER_URL);
 
-    const intervalId = setInterval(() => {
-      fetchData();
-    }, 2000);
-
-    const handleVisibility = () => {
-      if (document.visibilityState === 'visible') {
-        fetchData();
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibility);
+    socket.on('gameStateUpdate', (data) => {
+      setChallenges(data.challenges);
+      setBattles(data.battles);
+    });
 
     return () => {
-      clearInterval(intervalId);
-      document.removeEventListener('visibilitychange', handleVisibility);
+      socket.disconnect();
     };
   }, []);
 
   const handleCompleteChallenge = (challenge: Challenge, team: Team) => {
-    fetch(`${API_BASE_URL}/challenges/${challenge.id}?team=${team}`, {
-      method: 'POST',
-    }).then(() => fetchData());
+    fetch(`${API_BASE_URL}/challenges/${challenge.id}?team=${team}`, { method: 'POST' });
   };
 
   const handleStartBattle = () => {
-    fetch(`${API_BASE_URL}/battles/new`, {
-      method: 'POST',
-    }).then(() => fetchData());
+    fetch(`${API_BASE_URL}/battles/new`, { method: 'POST' });
   };
 
   const handleCompleteBattle = (challenge: Challenge, team: Team) => {
-    fetch(`${API_BASE_URL}/battles/${challenge.id}?team=${team}`, {
-      method: 'POST',
-    }).then(() => fetchData());
+    fetch(`${API_BASE_URL}/battles/${challenge.id}?team=${team}`, { method: 'POST' });
   };
 
   const handleUndoChallenge = () => {
-    fetch(`${API_BASE_URL}/challenges/undo`, {
-      method: 'POST',
-    }).then(() => fetchData());
+    fetch(`${API_BASE_URL}/challenges/undo`, { method: 'POST' });
   };
 
   const handleUndoBattle = () => {
-    fetch(`${API_BASE_URL}/battles/undo`, {
-      method: 'POST',
-    }).then(() => fetchData());
+    fetch(`${API_BASE_URL}/battles/undo`, { method: 'POST' });
   };
 
   const activeBattle = battles.find(b => b.status === 'ACTIVE');
-  const lastCompletedBattle = [...battles].reverse().find(b => b.status === 'COMPLETED');
+  const lastCompletedBattle = battles.find(b => b.status === 'COMPLETED');
 
   return (
     <div>

@@ -1,8 +1,10 @@
 import {useState} from 'react'
-import { API_BASE_URL } from './config';
+import {SERVER_URL} from './config';
 import './App.css'
 import Map from './Map';
 import Challenges from './Challenges';
+
+const API_BASE_URL = `${SERVER_URL}/api`;
 
 function App() {
   const [activeTab, setActiveTab] = useState<'map' | 'challenges'>('map');

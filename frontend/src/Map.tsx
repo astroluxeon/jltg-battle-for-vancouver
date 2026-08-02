@@ -1,44 +1,27 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import {API_BASE_URL} from './config';
+import {io} from 'socket.io-client';
+import {SERVER_URL} from './config';
 import {Region, Team} from '../../shared/types';
+
+const API_BASE_URL = `${SERVER_URL}/api`;
 
 export default function Map() {
   const [regions, setRegions] = useState<Region[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
 
   useEffect(() => {
-    const fetchRegions = () => {
-      if (navigator.onLine && document.visibilityState === 'visible') {
-        fetch(`${API_BASE_URL}/regions`)
-          .then(response => response.json())
-          .then(data => {
-            setRegions(data);
+    const socket = io(SERVER_URL);
 
-            setSelectedRegion(currentSelected => {
-              if (!currentSelected) return null;
-              return data.find((r: Region) => r.id === currentSelected.id) || null;
-            });
-          })
-          .catch(error => console.error("Failed to fetch regions: ", error));
-      }
-    };
-
-    fetchRegions();
-
-    const intervalId = setInterval(() => {
-      fetchRegions();
-    }, 2000);
-
-    const handleVisibility = () => {
-      if (document.visibilityState === 'visible') {
-        fetchRegions();
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibility);
+    socket.on('gameStateUpdate', (data) => {
+      setRegions(data.regions);
+      setSelectedRegion(currentSelected => {
+        if (!currentSelected) return null;
+        return data.regions.find((r: Region) => r.id === currentSelected.id) || null;
+      });
+    });
 
     return () => {
-      clearInterval(intervalId);
-      document.removeEventListener('visibilitychange', handleVisibility);
+      socket.disconnect();
     };
   }, []);
 
@@ -53,12 +36,8 @@ export default function Map() {
     if (selectedRegion) {
       fetch(`${API_BASE_URL}/regions/${selectedRegion.id}/${url}`, {
         method: 'POST',
-      }).then(() => {
-        fetch(`${API_BASE_URL}/regions`)
-          .then(response => response.json())
-          .then(data => setRegions(data));
-        setSelectedRegion(null);
       });
+      setSelectedRegion(null);
     }
   };
 
