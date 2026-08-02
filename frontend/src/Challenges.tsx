@@ -52,7 +52,7 @@ export default function Challenges() {
         padding: '20px',
         backgroundColor: '#fff0f0',
         border: '2px solid #cc0000',
-        borderRadius: '8px',
+        borderRadius: '16px',
         display: 'flex',
         flexDirection: 'column'
       }}>
@@ -108,7 +108,13 @@ export default function Challenges() {
         )}
       </div>
 
-      <div>
+      <div style={{
+        marginBottom: '30px',
+        padding: '20px',
+        backgroundColor: '#e2e8f0',
+        border: '2px solid #a8a8cc',
+        borderRadius: '16px'
+      }}>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
           <h3 style={{ margin: 0 }}>Challenges</h3>
 
@@ -138,7 +144,6 @@ export default function Challenges() {
                   marginBottom: '10px',
                   padding: '15px 10px',
                   minHeight: '120px',
-                  borderBottom: '1px solid #eee',
                   textDecoration: challenge.status === 'COMPLETED' ? 'line-through' : 'none',
                   color: challenge.status === 'COMPLETED' ? '#888888' : '#000000',
                   display: 'flex',

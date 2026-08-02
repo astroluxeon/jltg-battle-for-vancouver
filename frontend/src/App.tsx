@@ -31,9 +31,9 @@ function App() {
   };
 
   return (
-    <div style={{ width: '95%', margin: '0 auto', padding: '20px', fontFamily: 'sans-serif' }}>
+    <div style={{ width: '90%', margin: '0 auto', padding: '20px', fontFamily: 'sans-serif' }}>
       <h1 style={{ textAlign: 'center' }}>Jet Lag: The Game – Battle for Vancouver</h1>
-      <h3 style={{ textAlign: 'center' }}>Fruit Market Edition</h3>
+      <h3 style={{ textAlign: 'center' }}>Fruit Market Edition by Blood Orange</h3>
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px' }}>
         <button
