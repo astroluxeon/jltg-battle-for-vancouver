@@ -4,15 +4,15 @@ import java.util.Map;
 import java.util.List;
 import java.util.Stack;
 
-public class GameState {
+public class GameData {
     private Map<String, Region> regions;
     private List<Challenge> challenges;
     private List<Challenge> battles;
     private Stack<Pair<Integer, Integer>> challengeHistory;
 
-    public GameState() {}
+    public GameData() {}
 
-    public GameState(Map<String, Region> regions, List<Challenge> challenges, List<Challenge> battles, Stack<Pair<Integer, Integer>> challengeHistory) {
+    public GameData(Map<String, Region> regions, List<Challenge> challenges, List<Challenge> battles, Stack<Pair<Integer, Integer>> challengeHistory) {
         this.regions = regions;
         this.challenges = challenges;
         this.battles = battles;
