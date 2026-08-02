@@ -1,14 +1,6 @@
 import {useEffect, useState} from 'react'
-import { API_BASE_URL } from './config';
-
-interface Challenge {
-  type: string;
-  id: number;
-  name: string;
-  description: string;
-  status: string;
-  team: string;
-}
+import {API_BASE_URL} from './config';
+import {Challenge, Team} from '../../shared/types';
 
 export default function Challenges() {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -19,12 +11,12 @@ export default function Challenges() {
       fetch(`${API_BASE_URL}/challenges`)
         .then(response => response.json())
         .then(data => setChallenges(data))
-        .catch(error => console.error("Failed to fetch challenges:", error));
+        .catch(error => console.error("Failed to fetch challenges: ", error));
 
       fetch(`${API_BASE_URL}/battles`)
         .then(response => response.json())
         .then(data => setBattles(data))
-        .catch(error => console.error("Failed to fetch battles:", error));
+        .catch(error => console.error("Failed to fetch battles: ", error));
     }
   };
 
@@ -48,7 +40,7 @@ export default function Challenges() {
     };
   }, []);
 
-  const handleCompleteChallenge = (challenge: Challenge, team: string) => {
+  const handleCompleteChallenge = (challenge: Challenge, team: Team) => {
     fetch(`${API_BASE_URL}/challenges/${challenge.id}?team=${team}`, {
       method: 'POST',
     }).then(() => fetchData());
@@ -60,7 +52,7 @@ export default function Challenges() {
     }).then(() => fetchData());
   };
 
-  const handleCompleteBattle = (challenge: Challenge, team: string) => {
+  const handleCompleteBattle = (challenge: Challenge, team: Team) => {
     fetch(`${API_BASE_URL}/battles/${challenge.id}?team=${team}`, {
       method: 'POST',
     }).then(() => fetchData());
@@ -72,8 +64,8 @@ export default function Challenges() {
     }).then(() => fetchData());
   };
 
-  const handleUndoBattle = (challenge: Challenge) => {
-    fetch(`${API_BASE_URL}/battles/${challenge.id}/undo`, {
+  const handleUndoBattle = () => {
+    fetch(`${API_BASE_URL}/battles/undo`, {
       method: 'POST',
     }).then(() => fetchData());
   };
@@ -101,7 +93,7 @@ export default function Challenges() {
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
               <button
-                onClick={() => handleUndoBattle(activeBattle)}
+                onClick={() => handleUndoBattle()}
                 style={{ backgroundColor: '#666666', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
               >
                 Undo Start Battle
@@ -127,7 +119,7 @@ export default function Challenges() {
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
               {lastCompletedBattle && (
                 <button
-                  onClick={() => handleUndoBattle(lastCompletedBattle)}
+                  onClick={() => handleUndoBattle()}
                   style={{ backgroundColor: '#666666', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
                 >
                   Undo Last Battle Win
@@ -160,7 +152,7 @@ export default function Challenges() {
 
         <ul style={{ listStyleType: 'none', padding: 0 }}>
           {challenges
-            .filter((challenge: Challenge) => challenge.type === 'claim' && challenge.status !== 'INACTIVE')
+            .filter((challenge: Challenge) => challenge.type === 'CLAIM' && challenge.status !== 'INACTIVE')
             .sort((a: Challenge, b: Challenge) => {
               if (a.status === 'COMPLETED' && b.status !== 'COMPLETED') return 1;
               if (a.status !== 'COMPLETED' && b.status === 'COMPLETED') return -1;

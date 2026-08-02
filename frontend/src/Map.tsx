@@ -1,12 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import { API_BASE_URL } from './config';
-
-interface Region {
-  id: string;
-  name: string;
-  team: string;
-  locked: boolean;
-}
+import {API_BASE_URL} from './config';
+import {Region, Team} from '../../shared/types';
 
 export default function Map() {
   const [regions, setRegions] = useState<Region[]>([]);
@@ -55,9 +49,9 @@ export default function Map() {
     return regions.filter(r => r.team === 'BLUE').length;
   }, [regions]);
 
-  const updateRegion = (actionUrl: string) => {
+  const updateRegion = (url: string) => {
     if (selectedRegion) {
-      fetch(`${API_BASE_URL}/regions/${selectedRegion.id}/${actionUrl}`, {
+      fetch(`${API_BASE_URL}/regions/${selectedRegion.id}/${url}`, {
         method: 'POST',
       }).then(() => {
         fetch(`${API_BASE_URL}/regions`)
@@ -78,7 +72,7 @@ export default function Map() {
     }
   };
 
-  const handleTeamSelect = (team: string) => {
+  const handleTeamSelect = (team: Team) => {
     updateRegion(`claim?team=${team}`);
   };
 
@@ -179,7 +173,7 @@ export default function Map() {
             stroke="white"
             strokeWidth="2"
             style={{ cursor: 'pointer' }}
-            onClick={ handleClaim }
+            onClick={handleClaim}
           >
             <path
               id="arbutus"
