@@ -112,7 +112,7 @@ export default function Challenges() {
         marginBottom: '30px',
         padding: '20px',
         backgroundColor: '#e2e8f0',
-        border: '2px solid #a8a8cc',
+        border: '2px solid #666666',
         borderRadius: '16px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
