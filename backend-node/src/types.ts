@@ -1,6 +1,6 @@
 export type Team = 'NONE' | 'BLUE' | 'RED';
 export type Status = 'INACTIVE' | 'ACTIVE' | 'COMPLETED';
-export type ChallengeType = 'CLAIM' | 'BATTLE';
+export type Type = 'CLAIM' | 'BATTLE';
 
 export interface Region {
   id: string;
@@ -10,7 +10,7 @@ export interface Region {
 }
 
 export interface Challenge {
-  type: ChallengeType;
+  type: Type;
   id: number;
   name: string;
   description: string;
