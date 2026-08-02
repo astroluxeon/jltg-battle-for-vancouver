@@ -127,6 +127,8 @@ class GameService {
     const region = this.data.regions[id];
 
     if (region) {
+      if (region.locked) return;
+
       region.team = team;
       await this.saveToFile();
       console.log(`${region.name} claimed by ${team}`);
