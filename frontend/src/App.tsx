@@ -134,7 +134,7 @@ function App() {
         {activeTab === 'map' && <Map />}
         {activeTab === 'challenges' && <Challenges />}
       </div>
-
+      <br />
     </div>
   );
 }
