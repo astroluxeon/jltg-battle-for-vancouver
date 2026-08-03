@@ -94,7 +94,7 @@ export default function Challenges() {
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <p style={{ margin: 0, color: '#94a3b8', fontStyle: 'italic' }}>No Active Battle Challenge</p>
+            <p style={{ margin: 0, color: '#94a3b8', fontStyle: 'italic' }}>No Active Battle</p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
               <button
