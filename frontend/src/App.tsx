@@ -130,7 +130,7 @@ function App() {
         </div>
       </div>
 
-      <div style={{ width: '100%', maxWidth: '1000px', boxSizing: 'border-box', flexGrow: 1 }}>
+      <div style={{ width: '95%', maxWidth: '1000px', boxSizing: 'border-box', flexGrow: 1 }}>
         {activeTab === 'map' && <Map />}
         {activeTab === 'challenges' && <Challenges />}
       </div>
