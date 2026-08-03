@@ -64,7 +64,7 @@ function App() {
             rel="noopener noreferrer"
             style={{ color: '#f97316', textDecoration: 'none' }}
           >
-            by Blood Orange
+            By Blood Orange
           </a>
         </h3>
       </div>
