@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {io} from 'socket.io-client';
+import {TransformWrapper, TransformComponent} from "react-zoom-pan-pinch";
 import {Region, Team} from '../../shared/types';
 import {vancouverMapData} from './map-data';
 import {SERVER_URL} from './config';
@@ -73,6 +74,14 @@ export default function Map() {
     return region?.locked ? 1.0 : 0.6;
   }
 
+  const zoomButtonStyle = {
+    width: '40px', height: '40px', borderRadius: '20px',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)', backdropFilter: 'blur(10px)',
+    border: 'none', boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+    fontSize: '20px', fontWeight: 'bold', color: '#475569',
+    cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center'
+  };
+
   return (
     <div style={{
       position: 'relative',
@@ -108,52 +117,82 @@ export default function Map() {
         <span style={{ color: '#2563eb' }}>{blueScore} 🔵</span>
       </div>
 
-      <div style={{ width: '100%', height: '100%' }}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 800 385"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ width: '100%', height: 'auto' }}
-        >
-          <g
-            id="vancouver-neighborhoods"
-            fill="lightgray"
-            stroke="white"
-            strokeWidth="2"
-            style={{ cursor: 'pointer' }}
-            onClick={handleClaim}
-          >
-            {vancouverMapData.map((region) => (
-              <path
-                key={region.id}
-                id={region.id}
-                d={region.path}
-                fill={getRegionColor(region.id)}
-                opacity={getRegionOpacity(region.id)}
-              />
-            ))}
-          </g>
+      <TransformWrapper
+        initialScale={1}
+        minScale={1}
+        maxScale={5}
+        centerOnInit
+        wheel={{ step: 0.01 }}
+      >
+        {({ zoomIn, zoomOut, resetTransform }) => (
+          <React.Fragment>
+            <div style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              zIndex: 10,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px'
+            }}>
+              <button onClick={() => zoomIn()} style={zoomButtonStyle}>+</button>
+              <button onClick={() => zoomOut()} style={zoomButtonStyle}>-</button>
+              <button onClick={() => resetTransform()} style={{...zoomButtonStyle, fontSize: '16px'}}>↺</button>
+            </div>
 
-          <g id="locks" style={{ pointerEvents: 'none' }}>
-            {regions.filter(r => r.locked).map(region => {
-              const data = vancouverMapData.find(r => r.id === region.id);
-              if (!data) return null;
-              return (
-                <text
-                  key={`lock-${region.id}`}
-                  x={data.lockX}
-                  y={data.lockY}
-                  fontSize="22"
-                  textAnchor="middle"
+            <TransformComponent
+              wrapperStyle={{ width: '100%', height: '100%' }}
+              contentStyle={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 800 385"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ width: '100%', height: '100%' }}
+              >
+                <g
+                  id="vancouver-neighborhoods"
+                  fill="lightgray"
+                  stroke="white"
+                  strokeWidth="2"
+                  style={{ cursor: 'pointer' }}
+                  onClick={handleClaim}
                 >
-                  🔒
-                </text>
-              );
-            })}
-          </g>
-        </svg>
-      </div>
+                  {vancouverMapData.map((region) => (
+                    <path
+                      key={region.id}
+                      id={region.id}
+                      d={region.path}
+                      fill={getRegionColor(region.id)}
+                      opacity={getRegionOpacity(region.id)}
+                      style={{ transition: 'fill 0.2s ease, opacity 0.2s ease' }}
+                    />
+                  ))}
+                </g>
+
+                <g id="locks" style={{ pointerEvents: 'none' }}>
+                  {regions.filter(r => r.locked).map(region => {
+                    const data = vancouverMapData.find(r => r.id === region.id);
+                    if (!data) return null;
+                    return (
+                      <text
+                        key={`lock-${region.id}`}
+                        x={data.lockX}
+                        y={data.lockY}
+                        fontSize="22"
+                        textAnchor="middle"
+                      >
+                        🔒
+                      </text>
+                    );
+                  })}
+                </g>
+              </svg>
+            </TransformComponent>
+          </React.Fragment>
+        )}
+      </TransformWrapper>
 
       {selectedRegion && (
         <div style={{
