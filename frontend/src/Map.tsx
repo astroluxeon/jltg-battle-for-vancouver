@@ -254,7 +254,7 @@ export default function Map() {
                 boxShadow: selectedRegion.locked ? 'none' : '0 4px 0 #94a3b8'
               }}
             >
-              Reset Claim
+              Reset
             </button>
           </div>
         </div>
