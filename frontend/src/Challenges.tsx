@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {io} from 'socket.io-client';
-import {SERVER_URL} from './config';
 import {Challenge, Team} from '../../shared/types';
+import {SERVER_URL} from './config';
 
 const API_BASE_URL = `${SERVER_URL}/api`;
 
