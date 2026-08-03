@@ -31,67 +31,112 @@ function App() {
   };
 
   return (
-    <div style={{ width: '90%', margin: '0 auto', padding: '20px', fontFamily: 'sans-serif' }}>
-      <h1 style={{ textAlign: 'center' }}>Jet Lag: The Game – Battle for Vancouver</h1>
-      <h3 style={{ textAlign: 'center' }}>Fruit Market Edition by Blood Orange</h3>
-
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px' }}>
-        <button
-          onClick={() => setActiveTab('map')}
-          style={{
-            padding: '10px 20px',
-            cursor: 'pointer',
-            backgroundColor: activeTab === 'map' ? '#333' : '#ddd',
-            color: activeTab === 'map' ? 'white' : 'black',
-            border: 'none',
-            borderRadius: '4px'
-          }}
-        >
-          Map
-        </button>
-        <button
-          onClick={() => setActiveTab('challenges')}
-          style={{
-            padding: '10px 20px',
-            cursor: 'pointer',
-            backgroundColor: activeTab === 'challenges' ? '#333' : '#ddd',
-            color: activeTab === 'challenges' ? 'white' : 'black',
-            border: 'none',
-            borderRadius: '4px'
-          }}
-        >
-          Challenges
-        </button>
-        <button
-          onClick={() => window.open('https://docs.google.com/document/d/1uHxpWV_sGMHQ17T4hG_Qxm5JjJ_uNXeDSoafO_Ndc8Q/edit?usp=sharing', '_blank', 'noopener,noreferrer')}
-          style={{
-            padding: '10px 20px',
-            backgroundColor: '#ddd',
-            color: 'black',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          Rules
-        </button>
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: '#f1f5f9',
+      fontFamily: '"Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    }}>
+      <div style={{ width: '100%', maxWidth: '800px', padding: '24px 20px 12px 20px', boxSizing: 'border-box' }}>
+        <h1 style={{
+          margin: '0 0 4px 0',
+          textAlign: 'center',
+          fontSize: '36px',
+          fontWeight: '900',
+          color: '#0f172a',
+          lineHeight: '1.2'
+        }}>
+          Jet Lag: The Game – Battle for Vancouver
+        </h1>
+        <h3 style={{
+          margin: 0,
+          textAlign: 'center',
+          fontSize: '16px',
+          fontWeight: '600',
+          color: '#64748b'
+        }}>
+          Fruit Market Edition •{' '}
+          <a
+            href="https://github.com/astroluxeon/jltg-battle-for-vancouver/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#f97316', textDecoration: 'none' }}
+          >
+            by Blood Orange
+          </a>
+        </h3>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'right', marginBottom: '20px' }}>
-        <button
-          onClick={handleReset}
-          style={{ backgroundColor: '#ff4444', color: 'white', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-        >
-          Reset Game
-        </button>
+      <div style={{ width: '100%', maxWidth: '1000px', padding: '0 20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '20px' }}>
+        <div style={{
+          display: 'flex',
+          backgroundColor: '#e2e8f0',
+          padding: '6px',
+          borderRadius: '9999px',
+          boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.05)'
+        }}>
+          <button
+            onClick={() => setActiveTab('map')}
+            style={{
+              flex: 1, padding: '12px 20px', borderRadius: '9999px', border: 'none',
+              backgroundColor: activeTab === 'map' ? '#ffffff' : 'transparent',
+              color: activeTab === 'map' ? '#0f172a' : '#64748b',
+              fontWeight: 'bold', fontSize: '15px', cursor: 'pointer',
+              boxShadow: activeTab === 'map' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none',
+              transition: 'all 0.2s ease-in-out'
+            }}
+          >
+            Map
+          </button>
+          <button
+            onClick={() => setActiveTab('challenges')}
+            style={{
+              flex: 1, padding: '12px 20px', borderRadius: '9999px', border: 'none',
+              backgroundColor: activeTab === 'challenges' ? '#ffffff' : 'transparent',
+              color: activeTab === 'challenges' ? '#0f172a' : '#64748b',
+              fontWeight: 'bold', fontSize: '15px', cursor: 'pointer',
+              boxShadow: activeTab === 'challenges' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none',
+              transition: 'all 0.2s ease-in-out'
+            }}
+          >
+            Challenges
+          </button>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 8px' }}>
+          <button
+            onClick={() => window.open('https://docs.google.com/document/d/1uHxpWV_sGMHQ17T4hG_Qxm5JjJ_uNXeDSoafO_Ndc8Q/edit?usp=sharing', '_blank', 'noopener,noreferrer')}
+            style={{
+              backgroundColor: '#c7dbf0', color: '#2563eb', padding: '6px 12px',
+              borderRadius: '9999px', border: 'none', cursor: 'pointer',
+              fontWeight: '700', fontSize: '12px'
+            }}
+          >
+            📄 Rules
+          </button>
+
+          <button
+            onClick={handleReset}
+            style={{
+              backgroundColor: '#fee2e2', color: '#dc2626', padding: '6px 12px',
+              borderRadius: '9999px', border: 'none', cursor: 'pointer',
+              fontWeight: '700', fontSize: '12px'
+            }}
+          >
+            ⚠️ Reset Game
+          </button>
+        </div>
       </div>
 
-      <div>
+      <div style={{ width: '100%', maxWidth: '1000px', boxSizing: 'border-box', flexGrow: 1 }}>
         {activeTab === 'map' && <Map />}
         {activeTab === 'challenges' && <Challenges />}
       </div>
+
     </div>
   );
 }
 
-export default App
+export default App;
