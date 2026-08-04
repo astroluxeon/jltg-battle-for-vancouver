@@ -63,14 +63,15 @@ export default function Map() {
 
   const getRegionColor = (id: string) => {
     const region = regions.find(r => r.id === id);
-    if (!region || region.team === 'NONE') return 'lightgray';
-    if (region.team === 'RED') return 'red';
-    if (region.team === 'BLUE') return 'blue';
+    if (!region || region.team === 'NONE') return region === selectedRegion ? 'darkgray' : 'lightgray';
+    if (region.team === 'RED') return region === selectedRegion ? 'darkred' : 'red';
+    if (region.team === 'BLUE') return region === selectedRegion ? 'darkblue' : 'blue';
     return 'lightgray';
   };
 
   const getRegionOpacity = (id: string) => {
     const region = regions.find(r => r.id === id);
+    if (region === selectedRegion) return 1.0;
     return region?.locked ? 1.0 : 0.6;
   }
 
