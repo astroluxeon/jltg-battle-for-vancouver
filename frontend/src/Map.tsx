@@ -36,9 +36,7 @@ export default function Map() {
 
   const updateRegion = (url: string) => {
     if (selectedRegion) {
-      fetch(`${API_BASE_URL}/regions/${selectedRegion.id}/${url}`, {
-        method: 'POST',
-      });
+      fetch(`${API_BASE_URL}/regions/${selectedRegion.id}/${url}`, { method: 'POST' });
     }
   };
 
