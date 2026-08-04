@@ -30,6 +30,17 @@ function App() {
     }
   };
 
+  const handleReload = () => {
+    fetch(`${API_BASE_URL}/reload`, { method: 'POST' })
+    .then(response => {
+      if (response.ok) {
+        alert("Game successfully reloaded.");
+      }
+    }).catch(error => {
+      console.error("Error connecting to server:", error);
+    })
+  };
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -117,16 +128,39 @@ function App() {
             📄 Rules
           </button>
 
-          <button
-            onClick={handleReset}
-            style={{
-              backgroundColor: '#fee2e2', color: '#dc2626', padding: '6px 12px',
-              borderRadius: '9999px', border: 'none', cursor: 'pointer',
-              fontWeight: '700', fontSize: '12px'
-            }}
-          >
-            ⚠️ Reset Game
-          </button>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              onClick={handleReload}
+              style={{
+                backgroundColor: '#c7dbf0', color: '#2563eb', padding: '6px 12px',
+                borderRadius: '9999px', border: 'none', cursor: 'pointer',
+                fontWeight: '700', fontSize: '12px'
+              }}
+            >
+              🔄️ Reload Game
+            </button>
+            <button
+              onClick={handleReset}
+              style={{
+                backgroundColor: '#fee2e2', color: '#dc2626', padding: '6px 12px',
+                borderRadius: '9999px', border: 'none', cursor: 'pointer',
+                fontWeight: '700', fontSize: '12px'
+              }}
+            >
+              ⚠️ Reset Game
+            </button>
+          </div>
+
+          {/*<button*/}
+          {/*  onClick={handleReset}*/}
+          {/*  style={{*/}
+          {/*    backgroundColor: '#fee2e2', color: '#dc2626', padding: '6px 12px',*/}
+          {/*    borderRadius: '9999px', border: 'none', cursor: 'pointer',*/}
+          {/*    fontWeight: '700', fontSize: '12px'*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  ⚠️ Reset Game*/}
+          {/*</button>*/}
         </div>
       </div>
 
