@@ -26,7 +26,7 @@ class GameService {
     await this.loadFromFile();
   }
 
-  private async loadFromFile(): Promise<void> {
+  public async loadFromFile(): Promise<void> {
     try {
       const data = await fs.readFile(DATA_FILE, 'utf-8');
       this.data = JSON.parse(data);

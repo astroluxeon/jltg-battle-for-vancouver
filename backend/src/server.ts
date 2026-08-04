@@ -77,6 +77,12 @@ app.post('/api/reset', async (req: Request, res: Response) => {
   res.status(200).send("Game successfully reset.");
 });
 
+app.post('/api/reload', async (req: Request, res: Response) => {
+  await gameService.loadFromFile();
+  pushGameState();
+  res.status(200).send("Game successfully reloaded.");
+});
+
 app.post('/api/challenges/:id', async (req: Request, res: Response) => {
   const id = parseInt(req.params.id as string, 10);
   const team = req.query.team as string;
