@@ -39,7 +39,6 @@ export default function Map() {
       fetch(`${API_BASE_URL}/regions/${selectedRegion.id}/${url}`, {
         method: 'POST',
       });
-      setSelectedRegion(null);
     }
   };
 
@@ -55,6 +54,7 @@ export default function Map() {
 
   const handleTeamSelect = (team: Team) => {
     updateRegion(`claim?team=${team}`);
+    setSelectedRegion(null);
   };
 
   const handleLock = (lock: boolean) => {
