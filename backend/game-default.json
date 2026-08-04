@@ -402,7 +402,7 @@
       "type": "CLAIM",
       "id": 34,
       "name": "Bus Mania",
-      "description": "Take a photo with at least 4 buses in frame.",
+      "description": "Take a photo with at least 3 buses in frame.",
       "status": "INACTIVE",
       "team": "NONE"
     },
@@ -435,6 +435,30 @@
       "id": 38,
       "name": "Devolution on Display",
       "description": "Find a book that discusses the evolution of humans.",
+      "status": "INACTIVE",
+      "team": "NONE"
+    },
+    {
+      "type": "CLAIM",
+      "id": 39,
+      "name": "Themed Streets",
+      "description": "Take a picture of three roadways, all of which must be in the same category out of cities in British Columbia, or provinces and territories of Canada, or types of trees.",
+      "status": "INACTIVE",
+      "team": "NONE"
+    },
+    {
+      "type": "CLAIM",
+      "id": 40,
+      "name": "Hasty Movement",
+      "description": "Board a transit vehicle and immediately claim your current neighborhood, but you must stay on the transit vehicle for the next 20 minutes. If the vehicle reaches its terminus or is taken out of service, the timer is paused and will only be resumed when you board another vehicle on the same line or route.",
+      "status": "INACTIVE",
+      "team": "NONE"
+    },
+    {
+      "type": "CLAIM",
+      "id": 41,
+      "name": "Mediocre Travel Agent",
+      "description": "Go somewhere of your choosing between 500 m and 1 km away from your current location and immediately claim your current neighborhood, but you must spend 10 minutes there and take 3 pictures of yourself at that place. You may not do any other challenges or claim any other neighborhoods during this time.",
       "status": "INACTIVE",
       "team": "NONE"
     }
