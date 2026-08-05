@@ -290,7 +290,7 @@
       "type": "CLAIM",
       "id": 20,
       "name": "Math Minute",
-      "description": "Go to a secondary school and complete 40 correct times tables in 1 minute.",
+      "description": "Go to a public secondary school and complete 40 correct times tables in 1 minute.",
       "status": "INACTIVE",
       "team": "NONE"
     },
