@@ -154,7 +154,7 @@
       "type": "CLAIM",
       "id": 3,
       "name": "Words of Affirmation",
-      "description": "Write a note with a positive message and at least 3 sentences and slip it into a mailbox.",
+      "description": "Write a note with a positive message and at least 3 sentences. Slip it into a mailbox.",
       "status": "INACTIVE",
       "team": "NONE"
     },
@@ -178,7 +178,7 @@
       "type": "CLAIM",
       "id": 6,
       "name": "The Marionette",
-      "description": "Teammate A must put on a jacket or hoodie. However, Teammate A must act as a rigid mannequin, keeping their arms completely stiff and unhelpful. Teammate B must physically manipulate, lift, and bend Teammate A's arms and body to get the garment fully on and successfully zipped or buttoned up.",
+      "description": "One teammate must put on a jacket or hoodie while acting as a rigid mannequin, keeping their arms completely stiff and unhelpful. The other teammate must physically manipulate, lift, and bend the first teammate's arms and body to get the garment fully on and successfully zipped or buttoned up.",
       "status": "INACTIVE",
       "team": "NONE"
     },
@@ -202,7 +202,7 @@
       "type": "CLAIM",
       "id": 9,
       "name": "Miss Banana",
-      "description": "Balance a banana on your head while walking 50 meters.",
+      "description": "Balance a banana on your head while walking 50 meters. If the banana falls or you touch the banana, you must restart the challenge.",
       "status": "INACTIVE",
       "team": "NONE"
     },
@@ -354,7 +354,7 @@
       "type": "CLAIM",
       "id": 28,
       "name": "Move as One",
-      "description": "One teammate must completely retie their own shoe. One teammate may only use their left hand, and the other may only use their right hand. Your other hands may not be used. Film the entire retying process.",
+      "description": "Tie your inner legs together, but one teammate may only use their left hand, and the other may only use their right hand. Your other hands may not be used. You must then walk, with your legs tied, a distance of 200 meters.",
       "status": "INACTIVE",
       "team": "NONE"
     },
@@ -362,7 +362,7 @@
       "type": "CLAIM",
       "id": 29,
       "name": "Monkey See Monkey Do",
-      "description": "Swing on monkey bars at a playground.",
+      "description": "Swing on monkey bars or swings at a playground.",
       "status": "INACTIVE",
       "team": "NONE"
     },
@@ -410,7 +410,7 @@
       "type": "CLAIM",
       "id": 35,
       "name": "Hello World",
-      "description": "Find a publicly available computer and write a hello world program.",
+      "description": "Find a publicly available computer and type “hello world” on the device.",
       "status": "INACTIVE",
       "team": "NONE"
     },
