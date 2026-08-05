@@ -48,8 +48,8 @@ app.get('/api/regions', (req: Request, res: Response) => res.json(gameService.ge
 app.get('/api/challenges', (req: Request, res: Response) => res.json(gameService.getChallenges()));
 app.get('/api/battles', (req: Request, res: Response) => res.json(gameService.getBattles()));
 
-app.post('/api/challenges/undo', async (req: Request, res: Response) => {
-  await gameService.undoChallenge();
+app.post('/api/undo', async (req: Request, res: Response) => {
+  await gameService.undo();
   pushGameState();
   res.sendStatus(200);
 });
@@ -60,16 +60,24 @@ app.post('/api/battles/new', async (req: Request, res: Response) => {
   res.sendStatus(200);
 });
 
-app.post('/api/battles/undo', async (req: Request, res: Response) => {
-  await gameService.undoBattle();
-  pushGameState();
-  res.sendStatus(200);
-});
-
 app.post('/api/reset', async (req: Request, res: Response) => {
-  const resetKey = req.header('Reset-Key');
+  const resetKey = req.header('Reset-Key')?.toLowerCase();
   if (resetKey === 'banana') {
     await gameService.loadFromFile();
+    pushGameState();
+    res.status(403).send("Unauthorized reset attempt.");
+  } else if (resetKey?.startsWith('banana ')) {
+    const swapChallenges = resetKey.match(/^banana\s+(\d+)\s+(\d+)$/);
+    if (swapChallenges) {
+      const deactivate = parseInt(swapChallenges[1]!, 10);
+      const activate = parseInt(swapChallenges[2]!, 10);
+      await gameService.swapActiveChallenge(deactivate, activate);
+      pushGameState();
+    }
+    res.status(403).send("Unauthorized reset attempt.");
+  } else if (resetKey === 'peach') {
+    await gameService.clearUndoStack();
+    res.status(403).send("Unauthorized reset attempt.");
   } else if (resetKey === 'bloodorange') {
     await gameService.initializeNewGame();
     pushGameState();
