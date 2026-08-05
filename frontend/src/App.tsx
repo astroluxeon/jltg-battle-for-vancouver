@@ -30,6 +30,12 @@ function App() {
     }
   };
 
+  const handleUndo = () => {
+    if (window.confirm("Are you sure you want to undo the previous action?")) {
+      fetch(`${API_BASE_URL}/undo`, { method: 'POST' });
+    }
+  };
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -117,16 +123,28 @@ function App() {
             📄 Rules
           </button>
 
-          <button
-            onClick={handleReset}
-            style={{
-              backgroundColor: '#fee2e2', color: '#dc2626', padding: '6px 12px',
-              borderRadius: '9999px', border: 'none', cursor: 'pointer',
-              fontWeight: '700', fontSize: '12px'
-            }}
-          >
-            ⚠️ Reset Game
-          </button>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              onClick={handleUndo}
+              style={{
+                backgroundColor: '#c7dbf0', color: '#2563eb', padding: '6px 12px',
+                borderRadius: '9999px', border: 'none', cursor: 'pointer',
+                fontWeight: '700', fontSize: '12px'
+              }}
+            >
+              ↩️ Undo
+            </button>
+            <button
+              onClick={handleReset}
+              style={{
+                backgroundColor: '#fee2e2', color: '#dc2626', padding: '6px 12px',
+                borderRadius: '9999px', border: 'none', cursor: 'pointer',
+                fontWeight: '700', fontSize: '12px'
+              }}
+            >
+              ⚠️ Reset Game
+            </button>
+          </div>
         </div>
       </div>
 

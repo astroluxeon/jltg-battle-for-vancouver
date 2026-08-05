@@ -34,16 +34,7 @@ export default function Challenges() {
     fetch(`${API_BASE_URL}/battles/${challenge.id}?team=${team}`, { method: 'POST' });
   };
 
-  const handleUndoChallenge = () => {
-    fetch(`${API_BASE_URL}/challenges/undo`, { method: 'POST' });
-  };
-
-  const handleUndoBattle = () => {
-    fetch(`${API_BASE_URL}/battles/undo`, { method: 'POST' });
-  };
-
   const activeBattle = battles.find(b => b.status === 'ACTIVE');
-  const lastCompletedBattle = battles.find(b => b.status === 'COMPLETED');
 
   return (
     <div>
@@ -84,12 +75,6 @@ export default function Challenges() {
               >
                 Blue Win
               </button>
-              <button
-                onClick={() => handleUndoBattle()}
-                style={{ flex: 1, padding: '12px', borderRadius: '9999px', border: 'none', backgroundColor: '#e2e8f0', color: '#475569', fontWeight: 'bold', fontSize: '14px', cursor: 'pointer', boxShadow: '0 4px 0 #cbd5e1' }}
-              >
-                Undo
-              </button>
             </div>
           </div>
         ) : (
@@ -103,15 +88,6 @@ export default function Challenges() {
               >
                 Start Battle
               </button>
-
-              {lastCompletedBattle && (
-                <button
-                  onClick={() => handleUndoBattle()}
-                  style={{ flex: 1, padding: '12px', borderRadius: '9999px', border: 'none', backgroundColor: '#e2e8f0', color: '#475569', fontWeight: 'bold', fontSize: '14px', cursor: 'pointer', boxShadow: '0 4px 0 #cbd5e1' }}
-                >
-                  Undo
-                </button>
-              )}
             </div>
           </div>
         )}
@@ -130,15 +106,6 @@ export default function Challenges() {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', padding: '0 8px' }}>
             <h3 style={{ margin: 0, fontSize: '22px', color: '#64748b' }}>Challenges</h3>
-
-            {challenges.some(c => c.status === 'COMPLETED') && (
-              <button
-                onClick={handleUndoChallenge}
-                style={{ backgroundColor: '#cbd5e1', color: '#334155', padding: '8px 16px', border: 'none', borderRadius: '9999px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold', boxShadow: '0 2px 0 #94a3b8' }}
-              >
-                Undo
-              </button>
-            )}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
