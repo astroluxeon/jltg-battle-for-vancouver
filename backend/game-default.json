@@ -354,7 +354,7 @@
       "type": "CLAIM",
       "id": 28,
       "name": "Move as One",
-      "description": "One teammate must completely retie their own shoe. One teammate may only use their left hand, and the other may only use their right hand. Your other hands must remain firmly in your pockets. Film the entire retying process.",
+      "description": "One teammate must completely retie their own shoe. One teammate may only use their left hand, and the other may only use their right hand. Your other hands may not be used. Film the entire retying process.",
       "status": "INACTIVE",
       "team": "NONE"
     },
@@ -418,7 +418,7 @@
       "type": "CLAIM",
       "id": 36,
       "name": "Ape Illiteracy",
-      "description": "Read a full page of a young adult or adult novel out loud in reverse order.",
+      "description": "Read a full page of a young adult or adult novel out loud, saying the words in reverse order. You must complete it with no mistakes, recording the successful run.",
       "status": "INACTIVE",
       "team": "NONE"
     },
