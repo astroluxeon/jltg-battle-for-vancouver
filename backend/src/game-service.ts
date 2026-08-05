@@ -88,7 +88,7 @@ class GameService {
     if (previous) {
       this.data = JSON.parse(JSON.stringify(previous));
       await this.saveToFile();
-      console.log("Undone last action.")
+      console.log("Undo last action.")
       return true;
     }
 
