@@ -68,19 +68,15 @@ app.post('/api/battles/undo', async (req: Request, res: Response) => {
 
 app.post('/api/reset', async (req: Request, res: Response) => {
   const resetKey = req.header('Reset-Key');
-  if (resetKey !== 'bloodorange') {
+  if (resetKey === 'banana') {
+    await gameService.loadFromFile();
+  } else if (resetKey === 'bloodorange') {
+    await gameService.initializeNewGame();
+    pushGameState();
+    res.status(200).send("Game successfully reset.");
+  } else {
     res.status(403).send("Unauthorized reset attempt.");
-    return;
   }
-  await gameService.initializeNewGame();
-  pushGameState();
-  res.status(200).send("Game successfully reset.");
-});
-
-app.post('/api/reload', async (req: Request, res: Response) => {
-  await gameService.loadFromFile();
-  pushGameState();
-  res.status(200).send("Game successfully reloaded.");
 });
 
 app.post('/api/challenges/:id', async (req: Request, res: Response) => {
@@ -124,7 +120,6 @@ app.post('/api/regions/:id/lock', async (req: Request, res: Response) => {
 async function startServer() {
   try {
     await gameService.init();
-    // CRITICAL: We now listen on the HTTP `server` object, not the Express `app` object!
     server.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
     });

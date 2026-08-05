@@ -146,7 +146,7 @@
       "type": "CLAIM",
       "id": 2,
       "name": "Library on Wheels",
-      "description": "Move a book between two little free libraries within the same neighborhood.",
+      "description": "Move a book between two little free libraries and claim the region the second little free library is in.",
       "status": "INACTIVE",
       "team": "NONE"
     },
@@ -370,7 +370,7 @@
       "type": "CLAIM",
       "id": 30,
       "name": "Hydration Break",
-      "description": "Take a photo with a natural body of water.",
+      "description": "Take a photo of yourself with a natural body of water.",
       "status": "INACTIVE",
       "team": "NONE"
     },
@@ -449,16 +449,24 @@
     {
       "type": "CLAIM",
       "id": 40,
-      "name": "Hasty Movement",
-      "description": "Board a transit vehicle and immediately claim your current neighborhood, but you must stay on the transit vehicle for the next 20 minutes. If the vehicle reaches its terminus or is taken out of service, the timer is paused and will only be resumed when you board another vehicle on the same line or route.",
+      "name": "Curse of the Hasty Movement",
+      "description": "Board a transit vehicle and immediately claim your current region, but you must stay on the transit vehicle for the next 20 minutes. If the vehicle reaches its terminus or is taken out of service, the timer is paused and will only be resumed when you board another vehicle on the same line or route. You may not do any other challenges or claim any other regions during this time.",
       "status": "INACTIVE",
       "team": "NONE"
     },
     {
       "type": "CLAIM",
       "id": 41,
-      "name": "Mediocre Travel Agent",
-      "description": "Go somewhere of your choosing between 500 m and 1 km away from your current location and immediately claim your current neighborhood, but you must spend 10 minutes there and take 3 pictures of yourself at that place. You may not do any other challenges or claim any other neighborhoods during this time.",
+      "name": "Curse of the Mediocre Travel Agent",
+      "description": "Go somewhere of your choosing between 500 m and 1 km away from your current location and immediately claim your current region, but you must spend 10 minutes there and take 3 pictures of yourself at that place. You may not do any other challenges or claim any other regions during this time.",
+      "status": "INACTIVE",
+      "team": "NONE"
+    },
+    {
+      "type": "CLAIM",
+      "id": 42,
+      "name": "Curse of the Missed Transfer",
+      "description": "Board a transit vehicle and immediately claim your current region. However, you must then travel on three transit routes, including the one you just boarded. You may not travel along the same street or route on more than one of the three services. You may not do any other challenges or claim any other regions during this time.",
       "status": "INACTIVE",
       "team": "NONE"
     }
