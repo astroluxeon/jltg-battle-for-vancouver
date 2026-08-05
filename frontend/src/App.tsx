@@ -25,7 +25,7 @@ function App() {
           alert("Incorrect keyword.");
         }
       }).catch(error => {
-        console.error("Error connecting to server:", error);
+        console.error("Error connecting to server: ", error);
       });
     }
   };
