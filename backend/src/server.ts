@@ -120,6 +120,7 @@ app.post('/api/regions/:id/claim', async (req: Request, res: Response) => {
 app.post('/api/regions/:id/lock', async (req: Request, res: Response) => {
   const id = req.params.id;
   const lock = req.query.lock as string;
+  if (!lock) return res.status(400).send("Missing lock state");
   await gameService.lockRegion(id as string, lock.toUpperCase() as Lock);
   pushGameState();
   res.sendStatus(200);
