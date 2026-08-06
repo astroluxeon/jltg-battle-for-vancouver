@@ -55,8 +55,18 @@ export default function Map() {
     setSelectedRegion(null);
   };
 
-  const handleLock = (lock: boolean) => {
-    updateRegion(`lock?lock=${lock}`);
+  const handleLock = () => {
+    switch (selectedRegion?.lock) {
+      case "NONE":
+        updateRegion(`lock?lock=LOCK`);
+        break;
+      case "LOCK":
+        updateRegion(`lock?lock=BATTLE`);
+        break;
+      case "BATTLE":
+        updateRegion(`lock?lock=NONE`);
+        break;
+    }
   };
 
   const getRegionColor = (id: string) => {
@@ -70,7 +80,7 @@ export default function Map() {
   const getRegionOpacity = (id: string) => {
     const region = regions.find(r => r.id === id);
     if (region === selectedRegion) return 1.0;
-    return region?.locked ? 1.0 : 0.6;
+    return region?.lock !== 'NONE' ? 1.0 : 0.6;
   }
 
   const zoomButtonStyle = {
@@ -171,7 +181,7 @@ export default function Map() {
                 </g>
 
                 <g id="locks" style={{ pointerEvents: 'none' }}>
-                  {regions.filter(r => r.locked).map(region => {
+                  {regions.filter(r => r.lock !== 'NONE').map(region => {
                     const data = vancouverMapData.find(r => r.id === region.id);
                     if (!data) return null;
                     return (
@@ -182,7 +192,7 @@ export default function Map() {
                         fontSize="22"
                         textAnchor="middle"
                       >
-                        🔒
+                        {region.lock !== 'NONE' ? region.lock === 'BATTLE' ? '⚔️' : '🔒' : ''}
                       </text>
                     );
                   })}
@@ -219,14 +229,14 @@ export default function Map() {
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
                 <button
-                  onClick={() => handleLock(!selectedRegion.locked)}
+                  onClick={handleLock}
                   style={{
                     margin: 0,
                     padding: '6px 12px',
                     fontSize: '14px',
                     fontWeight: 'bold',
-                    color: selectedRegion.locked ? '#b91c1c' : '#15803d',
-                    backgroundColor: selectedRegion.locked ? '#fee2e2' : '#dcfce7',
+                    color: selectedRegion.lock !== 'NONE' ? '#b91c1c' : '#15803d',
+                    backgroundColor: selectedRegion.lock !== 'NONE' ? '#fee2e2' : '#dcfce7',
                     border: 'none',
                     borderRadius: '9999px',
                     cursor: 'pointer',
@@ -235,7 +245,7 @@ export default function Map() {
                     boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                   }}
                 >
-                  {selectedRegion.locked ? ' 🔒 ' : ' 🔓 '}
+                  {selectedRegion.lock !== 'NONE' ? (selectedRegion.lock === 'BATTLE' ? ' ⚔️ ' : ' 🔒 ') : ' 🔓 '}
                 </button>
               </div>
             </div>
@@ -257,39 +267,39 @@ export default function Map() {
           <div style={{ display: 'flex', gap: '12px' }}>
             <button
               onClick={() => handleTeamSelect('RED')}
-              disabled={selectedRegion.locked}
+              disabled={selectedRegion.lock !== 'NONE'}
               style={{
                 flex: 1, padding: '12px', borderRadius: '9999px', border: 'none',
-                backgroundColor: selectedRegion.locked ? '#fca5a5' : '#ef4444',
+                backgroundColor: selectedRegion.lock !== 'NONE' ? '#fca5a5' : '#ef4444',
                 color: 'white', fontWeight: 'bold', fontSize: '14px',
-                cursor: selectedRegion.locked ? 'not-allowed' : 'pointer',
-                boxShadow: selectedRegion.locked ? 'none' : '0 4px 0 #b91c1c'
+                cursor: selectedRegion.lock !== 'NONE' ? 'not-allowed' : 'pointer',
+                boxShadow: selectedRegion.lock !== 'NONE' ? 'none' : '0 4px 0 #b91c1c'
               }}
             >
               Red Claim
             </button>
             <button
               onClick={() => handleTeamSelect('BLUE')}
-              disabled={selectedRegion.locked}
+              disabled={selectedRegion.lock !== 'NONE'}
               style={{
                 flex: 1, padding: '12px', borderRadius: '9999px', border: 'none',
-                backgroundColor: selectedRegion.locked ? '#93c5fd' : '#3b82f6',
+                backgroundColor: selectedRegion.lock !== 'NONE' ? '#93c5fd' : '#3b82f6',
                 color: 'white', fontWeight: 'bold', fontSize: '14px',
-                cursor: selectedRegion.locked ? 'not-allowed' : 'pointer',
-                boxShadow: selectedRegion.locked ? 'none' : '0 4px 0 #1d4ed8'
+                cursor: selectedRegion.lock !== 'NONE' ? 'not-allowed' : 'pointer',
+                boxShadow: selectedRegion.lock !== 'NONE' ? 'none' : '0 4px 0 #1d4ed8'
               }}
             >
               Blue Claim
             </button>
             <button
               onClick={() => handleTeamSelect('NONE')}
-              disabled={selectedRegion.locked}
+              disabled={selectedRegion.lock !== 'NONE'}
               style={{
                 flex: 1, padding: '12px', borderRadius: '9999px', border: 'none',
-                backgroundColor: selectedRegion.locked ? '#e2e8f0' : '#cbd5e1',
+                backgroundColor: selectedRegion.lock !== 'NONE' ? '#e2e8f0' : '#cbd5e1',
                 color: '#475569', fontWeight: 'bold', fontSize: '14px',
-                cursor: selectedRegion.locked ? 'not-allowed' : 'pointer',
-                boxShadow: selectedRegion.locked ? 'none' : '0 4px 0 #94a3b8'
+                cursor: selectedRegion.lock !== 'NONE' ? 'not-allowed' : 'pointer',
+                boxShadow: selectedRegion.lock !== 'NONE' ? 'none' : '0 4px 0 #94a3b8'
               }}
             >
               Reset
