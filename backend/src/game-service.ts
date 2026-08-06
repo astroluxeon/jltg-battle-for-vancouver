@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import {GameState, Region, Challenge, Team} from '../../shared/types';
+import {GameState, Region, Challenge, Team, Lock} from '../../shared/types';
 
 const DATA_FILE = path.join(process.cwd(), 'game-data.json');
 const DEFAULT_FILE = path.join(process.cwd(), 'game-default.json');
@@ -157,7 +157,7 @@ class GameService {
     const region = this.data.regions[id];
 
     if (region) {
-      if (region.locked) return;
+      if (region.lock !== 'NONE') return;
       this.saveGameState();
       region.team = team;
       await this.saveToFile();
@@ -167,15 +167,15 @@ class GameService {
     }
   }
 
-  public async lockRegion(id: string, lock: boolean): Promise<void> {
+  public async lockRegion(id: string, lock: Lock): Promise<void> {
     const region = this.data.regions[id];
 
     if (region) {
       this.saveGameState();
-      region.locked = lock;
+      region.lock = lock;
       await this.saveToFile();
 
-      if (lock) {
+      if (lock !== 'NONE') {
         console.log(`${region.name} locked by ${region.team}`);
       }
     }

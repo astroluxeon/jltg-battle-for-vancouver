@@ -3,7 +3,7 @@ import http from 'http';
 import {Server} from 'socket.io';
 import cors from 'cors';
 import {gameService} from './game-service';
-import {Team} from "../../shared/types";
+import {Team, Lock} from "../../shared/types";
 
 const app = express();
 const server = http.createServer(app);
@@ -119,8 +119,8 @@ app.post('/api/regions/:id/claim', async (req: Request, res: Response) => {
 
 app.post('/api/regions/:id/lock', async (req: Request, res: Response) => {
   const id = req.params.id;
-  const lock = req.query.lock === 'true';
-  await gameService.lockRegion(id as string, lock);
+  const lock = req.query.lock as string;
+  await gameService.lockRegion(id as string, lock.toUpperCase() as Lock);
   pushGameState();
   res.sendStatus(200);
 });
