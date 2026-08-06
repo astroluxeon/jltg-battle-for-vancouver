@@ -186,7 +186,7 @@
       "type": "CLAIM",
       "id": 7,
       "name": "Gift For Pyo",
-      "description": "Photograph 6 and 7 on the same sign.",
+      "description": "Photograph 6 and 7 on the same sign. The 6 and 7 must be on the same line and may not be separated by any alphanumeric characters.",
       "status": "INACTIVE",
       "team": "NONE"
     },
@@ -637,6 +637,14 @@
       "id": 21,
       "name": "Multicultural City",
       "description": "Find a language that is the least spoken in the metropolitan area, according to Wikipedia.",
+      "status": "INACTIVE",
+      "team": "NONE"
+    },
+    {
+      "type": "BATTLE",
+      "id": 22,
+      "name": "Car-Centric City",
+      "description": "Photograph the pedestrian crossing signal with the largest number.",
       "status": "INACTIVE",
       "team": "NONE"
     }
