@@ -1,6 +1,7 @@
 export type Type = 'CLAIM' | 'BATTLE';
 export type Status = 'INACTIVE' | 'ACTIVE' | 'COMPLETED';
 export type Team = 'NONE' | 'BLUE' | 'RED';
+export type Lock = 'NONE' | 'LOCK' | 'BATTLE';
 
 export interface GameState {
   regions: Record<string, Region>;
@@ -12,7 +13,7 @@ export interface Region {
   id: string;
   name: string;
   team: Team;
-  locked: boolean;
+  lock: Lock;
 }
 
 export interface Challenge {
