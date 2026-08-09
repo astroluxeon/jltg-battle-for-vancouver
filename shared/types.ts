@@ -9,6 +9,11 @@ export interface GameState {
   battles: Challenge[];
 }
 
+export interface ChallengeState {
+  challenges: Challenge[];
+  battles: Challenge[];
+}
+
 export interface Region {
   id: string;
   name: string;
