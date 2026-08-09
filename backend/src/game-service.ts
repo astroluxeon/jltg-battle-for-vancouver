@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import {GameState, Region, Challenge, Team, Lock} from '../../shared/types';
+import {GameState, Region, Challenge, Team, Lock, ChallengeState} from '../../shared/types';
 
 const DATA_FILE = path.join(process.cwd(), 'game-data.json');
 const DEFAULT_FILE = path.join(process.cwd(), 'game-default.json');
@@ -20,7 +20,7 @@ class GameService {
     challenges: [],
     battles: []
   };
-  private undoStack: GameState[] = [];
+  private undoStack: ChallengeState[] = [];
 
   public async init(): Promise<void> {
     await this.loadFromFile();
@@ -70,29 +70,16 @@ class GameService {
   }
 
   private saveGameState(): void {
-    const state = JSON.parse(JSON.stringify(this.data));
-    this.undoStack.push(state);
+    const snapshot: ChallengeState = {
+      challenges: JSON.parse(JSON.stringify(this.data.challenges)),
+      battles: JSON.parse(JSON.stringify(this.data.battles))
+    };
+
+    this.undoStack.push(snapshot);
 
     if (this.undoStack.length > MAX_UNDO) {
       this.undoStack.shift();
     }
-  }
-
-  public async undo(): Promise<boolean> {
-    if (this.undoStack.length === 0) {
-      return false;
-    }
-
-    const previous = this.undoStack.pop();
-
-    if (previous) {
-      this.data = JSON.parse(JSON.stringify(previous));
-      await this.saveToFile();
-      console.log("Undo last action.")
-      return true;
-    }
-
-    return false;
   }
 
   public getChallenges(): Challenge[] {
@@ -158,7 +145,6 @@ class GameService {
 
     if (region) {
       if (region.lock !== 'NONE') return;
-      this.saveGameState();
       region.team = team;
       await this.saveToFile();
       console.log(`${region.name} claimed by ${team}`);
@@ -171,7 +157,6 @@ class GameService {
     const region = this.data.regions[id];
 
     if (region) {
-      this.saveGameState();
       region.lock = lock;
       await this.saveToFile();
 
@@ -179,6 +164,22 @@ class GameService {
         console.log(`${region.name} locked by ${region.team}`);
       }
     }
+  }
+
+  public async undo(): Promise<boolean> {
+    if (this.undoStack.length === 0) return false;
+
+    const prevState = this.undoStack.pop();
+
+    if (prevState) {
+      this.data.challenges = JSON.parse(JSON.stringify(prevState.challenges));
+      this.data.battles = JSON.parse(JSON.stringify(prevState.battles));
+
+      await this.saveToFile();
+      return true;
+    }
+
+    return false;
   }
 
   public async swapActiveChallenge(deactivate: number, activate: number): Promise<void> {
