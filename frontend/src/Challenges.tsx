@@ -3,14 +3,13 @@ import {io} from 'socket.io-client';
 import {Challenge, Team} from '../../shared/types';
 import {SERVER_URL} from './config';
 
-const API_BASE_URL = `${SERVER_URL}/api`;
-
-export default function Challenges() {
+export default function Challenges({gameId}: {gameId: string}) {
+  const API_BASE_URL = `${SERVER_URL}/api/games/${encodeURIComponent(gameId)}`;
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [battles, setBattles] = useState<Challenge[]>([]);
 
   useEffect(() => {
-    const socket = io(SERVER_URL);
+    const socket = io(SERVER_URL, {auth: {gameId}});
 
     socket.on('gameStateUpdate', (data) => {
       setChallenges(data.challenges);
@@ -20,7 +19,7 @@ export default function Challenges() {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [gameId]);
 
   const handleCompleteChallenge = (challenge: Challenge, team: Team) => {
     fetch(`${API_BASE_URL}/challenges/${challenge.id}?team=${team}`, { method: 'POST' });

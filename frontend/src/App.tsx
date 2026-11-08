@@ -3,11 +3,12 @@ import {SERVER_URL} from './config';
 import './App.css'
 import Map from './Map';
 import Challenges from './Challenges';
-
-const API_BASE_URL = `${SERVER_URL}/api`;
+import GameSelection from './GameSelection';
 
 function App() {
+  const [gameId, setGameId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'map' | 'challenges'>('map');
+  const API_BASE_URL = `${SERVER_URL}/api/games/${encodeURIComponent(gameId ?? '')}`;
 
   const handleReset = () => {
     const keyword = window.prompt("To reset the game, enter \"bloodorange\" below:");
@@ -35,6 +36,13 @@ function App() {
       fetch(`${API_BASE_URL}/undo`, { method: 'POST' });
     }
   };
+
+  if (!gameId) {
+    return <GameSelection onSelect={id => {
+      setActiveTab('map');
+      setGameId(id);
+    }} />;
+  }
 
   return (
     <div style={{
@@ -76,6 +84,10 @@ function App() {
       </div>
 
       <div style={{ width: '100%', maxWidth: '1000px', padding: '0 20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '20px' }}>
+        <div className="current-game">
+          <p className="current-game-id">Game ID: <strong>{gameId}</strong></p>
+          <button onClick={() => setGameId(null)}>Switch Game</button>
+        </div>
         <div style={{
           display: 'flex',
           backgroundColor: '#e2e8f0',
@@ -149,8 +161,8 @@ function App() {
       </div>
 
       <div style={{ width: '95%', maxWidth: '1000px', boxSizing: 'border-box', flexGrow: 1 }}>
-        {activeTab === 'map' && <Map />}
-        {activeTab === 'challenges' && <Challenges />}
+        {activeTab === 'map' && <Map key={gameId} gameId={gameId} />}
+        {activeTab === 'challenges' && <Challenges key={gameId} gameId={gameId} />}
       </div>
       <br />
     </div>

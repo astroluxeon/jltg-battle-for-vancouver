@@ -5,14 +5,13 @@ import {Region, Team} from '../../shared/types';
 import {vancouverMapData} from './map-data';
 import {SERVER_URL} from './config';
 
-const API_BASE_URL = `${SERVER_URL}/api`;
-
-export default function Map() {
+export default function Map({gameId}: {gameId: string}) {
+  const API_BASE_URL = `${SERVER_URL}/api/games/${encodeURIComponent(gameId)}`;
   const [regions, setRegions] = useState<Region[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
 
   useEffect(() => {
-    const socket = io(SERVER_URL);
+    const socket = io(SERVER_URL, {auth: {gameId}});
 
     socket.on('gameStateUpdate', (data) => {
       setRegions(data.regions);
@@ -25,7 +24,7 @@ export default function Map() {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [gameId]);
 
   const redScore = useMemo(() => {
     return regions.filter(r => r.team === 'RED').length;
