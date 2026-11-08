@@ -2,7 +2,6 @@ import fs from 'fs/promises';
 import path from 'path';
 import {GameState, Region, Challenge, Team, Lock, ChallengeState} from '../../shared/types';
 
-const DATA_FILE = path.join(process.cwd(), 'game-data.json');
 const DEFAULT_FILE = path.join(process.cwd(), 'game-default.json');
 const ACTIVE_DECK_SIZE = 6;
 const MAX_UNDO = 10;
@@ -14,53 +13,39 @@ function shuffle<T>(array: T[]): void {
   }
 }
 
-class GameService {
-  private data: GameState = {
-    regions: {},
-    challenges: [],
-    battles: []
-  };
-  private undoStack: ChallengeState[] = [];
+export interface SavedGame {
+  data: GameState;
+  undoStack: ChallengeState[];
+}
 
-  public async init(): Promise<void> {
-    await this.loadFromFile();
+export class GameService {
+  private data: GameState;
+  private undoStack: ChallengeState[];
+
+  constructor(
+    savedGame: SavedGame,
+    private readonly persist: (game: SavedGame) => Promise<void>,
+    private readonly reload: () => Promise<SavedGame>,
+    private readonly defaultFile = DEFAULT_FILE
+  ) {
+    this.data = structuredClone(savedGame.data);
+    this.undoStack = structuredClone(savedGame.undoStack);
   }
 
   public async loadFromFile(): Promise<void> {
-    try {
-      const raw = await fs.readFile(DATA_FILE, 'utf-8');
-      const data = JSON.parse(raw);
-      this.data = data.data;
-      this.undoStack = data.undoStack || [];
-      console.log('Loaded save data.');
-    } catch (error) {
-      console.log('No save data found or error reading data.');
-      await this.initializeNewGame();
-    }
+    const savedGame = await this.reload();
+    this.data = structuredClone(savedGame.data);
+    this.undoStack = structuredClone(savedGame.undoStack);
   }
 
   private async saveToFile(): Promise<void> {
-    try {
-      const data = {
-        data: this.data,
-        undoStack: this.undoStack
-      };
-      await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2));
-    } catch (error) {
-      console.error('Error saving file: ', error);
-    }
+    await this.persist({data: this.data, undoStack: this.undoStack});
   }
 
   public async initializeNewGame(): Promise<void> {
-    try {
-      const data = await fs.readFile(DEFAULT_FILE, 'utf-8');
-      this.data = JSON.parse(data);
-      this.undoStack = [];
-    } catch (error) {
-      console.error('Error initializing default game data: ', error);
-      this.data = { regions: {}, challenges: [], battles: [] };
-      this.undoStack = [];
-    }
+    const data = await fs.readFile(this.defaultFile, 'utf-8');
+    this.data = JSON.parse(data);
+    this.undoStack = [];
 
     for (let i = 0; i < ACTIVE_DECK_SIZE; i++) {
       this.drawCard(this.data.challenges);
@@ -200,5 +185,3 @@ class GameService {
     await this.saveToFile();
   }
 }
-
-export const gameService = new GameService();
