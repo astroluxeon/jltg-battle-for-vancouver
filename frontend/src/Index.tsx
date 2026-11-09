@@ -1,9 +1,9 @@
 import {useState} from 'react';
-import type {FormEvent} from 'react';
+import type {SubmitEvent} from 'react';
 import {SERVER_URL} from './config';
 import {normalizeGameId} from '../../shared/game-id';
 
-export default function GameSelection({onSelect}: {onSelect: (id: string) => void}) {
+export default function Index({onSelect}: {onSelect: (id: string) => void}) {
   const [gameId, setGameId] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -31,7 +31,7 @@ export default function GameSelection({onSelect}: {onSelect: (id: string) => voi
     }
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (gameId.trim()) void loadGame(false);
   };

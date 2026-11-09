@@ -3,7 +3,7 @@ import {SERVER_URL} from './config';
 import './App.css'
 import Map from './Map';
 import Challenges from './Challenges';
-import GameSelection from './GameSelection';
+import Index from './Index';
 
 function App() {
   const [gameId, setGameId] = useState<string | null>(null);
@@ -38,7 +38,7 @@ function App() {
   };
 
   if (!gameId) {
-    return <GameSelection onSelect={id => {
+    return <Index onSelect={id => {
       setActiveTab('map');
       setGameId(id);
     }} />;
