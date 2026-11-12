@@ -145,9 +145,8 @@ export class GameService {
       region.lock = lock;
       await this.saveToFile();
 
-      if (lock !== 'NONE') {
-        console.log(`${region.name} locked by ${region.team}`);
-      }
+      const action = {NONE: 'unlocked', LOCK: 'locked', BATTLE: 'battle locked'}[lock];
+      console.log(`${region.name} ${action} by ${region.team}`);
     }
   }
 
